@@ -1,4 +1,4 @@
-FROM php:7.2-apache-stretch
+FROM php:7.3-apache-stretch
 
 ARG DEVELOPER_MODE
 
@@ -33,9 +33,7 @@ RUN if [ "$MEMCACHED" = 1 ] ; then \
         && docker-php-ext-enable memcached ; \
     fi ;
 
-RUN echo "deb http://deb.debian.org/debian stretch-backports main" >> /etc/apt/sources.list ; \
-    apt-get update && apt-get -t stretch-backports install -y libsodium-dev ; \
-    docker-php-ext-install sodium
+
 
 RUN rm -r /var/lib/apt/lists/*
 
