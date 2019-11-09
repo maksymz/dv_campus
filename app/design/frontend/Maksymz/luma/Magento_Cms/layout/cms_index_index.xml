@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="footer-container">
+            <container name="cms-content-before-footer" before="-" htmlTag="div" htmlClass="cms-content-before-footer">
+                <block class="Magento\Framework\View\Element\Text">
+                    <action method="setText">
+                        <argument name="text" xsi:type="string">Some random text from DV Campus</argument>
+                    </action>
+                </block>
+            </container>
+        </referenceContainer>
+    </body>
+</page>
