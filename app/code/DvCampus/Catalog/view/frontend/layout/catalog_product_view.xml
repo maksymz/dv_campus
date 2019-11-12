@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd"
+>
+    <body>
+        <referenceContainer name="product.info.main">
+            <block class="Magento\Framework\View\Element\Template"
+                   name="product.info.demo"
+                   before="product.info.details"
+                   template="DvCampus_Catalog::product/view/demo.phtml"
+           >
+                <block class="DvCampus\Catalog\Block\Product\View\Demo"
+                       name="product.info.demo.childBlock"
+                       as="product.info.demo.testAlias"
+                       template="DvCampus_Catalog::product/view/demo/child_block.phtml"
+                >
+                    <arguments>
+                        <argument name="int_variable" xsi:type="number">777</argument>
+                        <argument name="string_variable" xsi:type="string">Some String</argument>
+                        <argument name="view_model" xsi:type="object">DvCampus\Catalog\ViewModel\Product</argument>
+                    </arguments>
+                </block>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

@@ -1,0 +1,5 @@
+<?php /** @var \DvCampus\Catalog\Block\Product\View\Demo $block */ ?>
+<p><?= $block->escapeHtml(__('This is a demo block')) ?></p>
+<p><?= $block->escapeHtml(__('Only %1 items of product %2 are left in stock', $block->getProductSalableQty(), $block->getProductName())) ?></p>
+<p><?= $block->escapeHtml(__('Int variable: %1', $block->getIntVariable())) ?></p>
+<p><?= $block->escapeHtml(__('String variable: %1', $block->getStringVariable())) ?></p>

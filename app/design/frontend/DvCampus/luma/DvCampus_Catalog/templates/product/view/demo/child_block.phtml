@@ -1,0 +1,23 @@
+<?php
+/** @var \DvCampus\Catalog\Block\Product\View\Demo $block */
+/** @var \Magento\Framework\View\TemplateEngine\Php $this */
+/** @var \DvCampus\Catalog\Helper\Product $productHelper */
+//$productHelper = $this->helper(\DvCampus\Catalog\Helper\Product::class);
+/** @var \DvCampus\Catalog\ViewModel\Product $viewModel */
+$viewModel = $block->getData('view_model');
+$categoryCollection = $viewModel->getProductCategoriesCollection($block->getProduct());
+?>
+<p><?= $block->escapeHtml(__('This is a demo block')) ?></p>
+<p><?= $block->escapeHtml(__('Only %1 items of product %2 are left in stock', $block->getProductSalableQty(), $block->getProductName())) ?></p>
+<p><?= $block->escapeHtml(__('Int variable: %1', $block->getIntVariable())) ?></p>
+<p><?= $block->escapeHtml(__('String variable: %1', $block->getStringVariable())) ?></p>
+<?php if ($categoryCollection->count()): ?>
+    <p><?= $block->escapeHtml(__('This product is available in these categories:')) ?></p>
+    <ul>
+        <?php foreach ($categoryCollection as $category): ?>
+            <li>
+                <a href="<?= $block->escapeUrl($category->getUrl()) ?>" title="<?= $block->escapeHtml($category->getName()) ?>"><?= $block->escapeHtml($category->getName()) ?></a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
