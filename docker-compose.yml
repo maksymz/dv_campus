@@ -1,5 +1,5 @@
 # SSL certificates for development
-# $ mkcert demo-232.local www.demo-232.local maksym-zaporozhets.local www.maksym-zaporozhets.local
+# $ mkcert maksym-zaporozhets.local www.maksym-zaporozhets.local maksym-zaporozhets-additional.local www.maksym-zaporozhets-additional.local
 #
 # DEVELOPMENT:
 # $ docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
@@ -12,7 +12,7 @@
 version: '3.7'
 services:
   php-apache:
-    container_name: demo-232.local
+    container_name: maksym-zaporozhets.local
     build:
       context: .
       dockerfile: docker/Dockerfile
@@ -23,16 +23,16 @@ services:
         - MEMCACHED=0
     restart: always
     labels:
-      # - traefik.enable=false
-      - traefik.http.frontend.rule=Host:demo-232.local,www.demo-232.local,maksym-zaporozhets.local,www.maksym-zaporozhets.local
+      - traefik.enable=true
+      - traefik.http.frontend.rule=Host:maksym-zaporozhets.local,www.maksym-zaporozhets.local,maksym-zaporozhets-additional.local,www.maksym-zaporozhets-additional.local
       - traefik.http.frontend.entryPoints=http
-      - traefik.https.frontend.rule=Host:demo-232.local,www.demo-232.local,maksym-zaporozhets.local,www.maksym-zaporozhets.local
+      - traefik.https.frontend.rule=Host:maksym-zaporozhets.local,www.maksym-zaporozhets.local,maksym-zaporozhets-additional.local,www.maksym-zaporozhets-additional.local
       - traefik.https.frontend.entryPoints=https
       - traefik.https.protocol=https
       - traefik.https.port=443
     # Must add extra_hosts to be written to /etc/hosts - otherwise containerized application can not curl itself
     extra_hosts:
-      - "demo-232.local www.demo-232.local maksym-zaporozhets.local www.maksym-zaporozhets.local:127.0.0.1"
+      - "maksym-zaporozhets.local www.maksym-zaporozhets.local maksym-zaporozhets-additional.local www.maksym-zaporozhets-additional.local:127.0.0.1"
 #    links:
 #      - memcached
     external_links:

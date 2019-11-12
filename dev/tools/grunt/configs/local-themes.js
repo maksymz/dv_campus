@@ -1,7 +1,7 @@
 module.exports = {
-    maksymz_luma_en_US: {
+    dvcampus_luma_en_US: {
         area: 'frontend',
-        name: 'Maksymz/luma',
+        name: 'DvCampus/luma',
         locale: 'en_US',
         files: [
             'css/styles-m',
@@ -9,9 +9,9 @@ module.exports = {
         ],
         dsl: 'less'
     },
-    maksymz_luma_uk_UA: {
+    dvcampus_luma_uk_UA: {
         area: 'frontend',
-        name: 'Maksymz/luma',
+        name: 'DvCampus/luma',
         locale: 'uk_UA',
         files: [
             'css/styles-m',
@@ -19,9 +19,9 @@ module.exports = {
         ],
         dsl: 'less'
     },
-    maksymz_luma_ru_RU: {
+    dvcampus_luma_ru_RU: {
         area: 'frontend',
-        name: 'Maksymz/luma',
+        name: 'DvCampus/luma',
         locale: 'ru_RU',
         files: [
             'css/styles-m',
