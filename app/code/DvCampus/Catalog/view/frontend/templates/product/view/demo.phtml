@@ -1,3 +1,23 @@
 <?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
 <p><?= $block->escapeHtml(__('Parent Block')) ?></p>
 <?= $block->getChildHtml('product.info.demo.testAlias') ?>
+
+<div data-mage-init='{"dvcampus_catalog_demoWidget": {}}'></div>
+<div data-mage-init='{"dvcampus_catalog_demoWidget": {"text": "Demo text"}}'></div>
+<div data-mage-init='{"dvcampus_catalog_demoWidget":
+    {
+        "text": "Yet another demo text"
+    }
+}'></div>
+
+<div class="x-magento-init-demo"></div>
+
+<script type="text/x-magento-init">
+    {
+        ".x-magento-init-demo": {
+            "dvcampus_catalog_demoWidget": {
+                "text": "x-magento-init demo"
+            }
+        }
+    }
+</script>
