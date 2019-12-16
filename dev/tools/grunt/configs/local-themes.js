@@ -1,3 +1,4 @@
+// grunt exec:dvcampus_luma_en_US && grunt less:dvcampus_luma_en_US && grunt watch
 module.exports = {
     dvcampus_luma_en_US: {
         area: 'frontend',
