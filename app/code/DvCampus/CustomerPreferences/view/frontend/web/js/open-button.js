@@ -14,8 +14,8 @@ define([
          * @private
          */
         _create: function () {
-            $(this.element).on('click.dvCampus_CustomerPreferences', $.proxy(this.openPreferences, this));
-            $(this.element).on('dvCampus_CustomerPreferences_closePreferences.dvCampus_CustomerPreferences', $.proxy(this.closePreferences, this));
+            $(this.element).on('click.dvCampus_customerPreferences', $.proxy(this.openPreferences, this));
+            $(this.element).on('dvCampus_CustomerPreferences_closePreferences.dvCampus_customerPreferences', $.proxy(this.closePreferences, this));
         },
 
         /**
@@ -23,8 +23,8 @@ define([
          * @private
          */
         _destroy: function () {
-            $(this.element).off('click.dvCampus_CustomerPreferences');
-            $(this.element).off('dvCampus_CustomerPreferences_closePreferences.dvCampus_CustomerPreferences');
+            $(this.element).off('click.dvCampus_customerPreferences');
+            $(this.element).off('dvCampus_CustomerPreferences_closePreferences.dvCampus_customerPreferences');
         },
 
         /**

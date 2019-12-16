@@ -13,6 +13,10 @@
                        name="dvCampus.customerPreferences.customerPreferences"
                        template="DvCampus_CustomerPreferences::sidebar.phtml"
                 />
+                <block class="Magento\Framework\View\Element\Template"
+                       name="dvCampus.customerPreferences.form"
+                       template="DvCampus_CustomerPreferences::form.phtml"
+                />
             </container>
         </referenceBlock>
     </body>
