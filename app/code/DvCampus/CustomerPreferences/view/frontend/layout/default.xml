@@ -11,7 +11,7 @@
                 />
                 <block class="Magento\Framework\View\Element\Template"
                        name="dvCampus.customerPreferences.customerPreferences"
-                       template="DvCampus_CustomerPreferences::customer_preferences.phtml"
+                       template="DvCampus_CustomerPreferences::sidebar.phtml"
                 />
             </container>
         </referenceBlock>
