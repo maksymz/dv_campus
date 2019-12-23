@@ -10,13 +10,12 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
 {
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
-        $installer = $setup;
-        $installer->startSetup();
+        $setup->startSetup();
 
         if (version_compare($context->getVersion(), '1.0.1', '<')) {
-            $table = $installer->getConnection()
+            $table = $setup->getConnection()
                 ->newTable(
-                    $installer->getTable('dv_campus_customer_preferences')
+                    $setup->getTable('dv_campus_customer_preferences')
                 )->addColumn(
                     'preference_id',
                     \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
@@ -50,7 +49,62 @@ class UpgradeSchema implements \Magento\Framework\Setup\UpgradeSchemaInterface
                 )->setComment(
                     'Just a demo table'
                 );
-            $installer->getConnection()->createTable($table);
+            $setup->getConnection()->createTable($table);
+        }
+
+        if (version_compare($context->getVersion(), '1.0.2', '<')) {
+            $connection = $setup->getConnection();
+
+            $connection->changeColumn(
+                $setup->getTable('dv_campus_customer_preferences'),
+                'customer_id',
+                'customer_id',
+                [
+                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_INTEGER,
+                    'length' => 10,
+                    'nullable' => false,
+                    'unsigned' => true
+                ]
+            );
+            $connection->changeColumn(
+                $setup->getTable('dv_campus_customer_preferences'),
+                'attribute_id',
+                'attribute_id',
+                [
+                    'type' => \Magento\Framework\DB\Ddl\Table::TYPE_SMALLINT,
+                    'length' => 5,
+                    'nullable' => false,
+                    'unsigned' => true
+                ]
+            );
+            $connection->addForeignKey(
+                $setup->getFkName(
+                    $setup->getTable('dv_campus_customer_preferences'),
+                    'customer_id',
+                    'customer_entity',
+                    'entity_id'
+                ),
+                $setup->getTable('dv_campus_customer_preferences'),
+                'customer_id',
+                $setup->getTable('customer_entity'),
+                'entity_id',
+                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE,
+                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+            );
+            $connection->addForeignKey(
+                $setup->getFkName(
+                    $setup->getTable('dv_campus_customer_preferences'),
+                    'attribute_id',
+                    'eav_attribute',
+                    'attribute_id'
+                ),
+                $setup->getTable('dv_campus_customer_preferences'),
+                'attribute_id',
+                $setup->getTable('eav_attribute'),
+                'attribute_id',
+                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE,
+                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
+            );
         }
     }
 }
