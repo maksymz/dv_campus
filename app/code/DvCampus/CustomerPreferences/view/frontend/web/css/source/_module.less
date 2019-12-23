@@ -1,0 +1,39 @@
+& when (@media-common = true) {
+    .dv-campus-customer-preferences-open-button {
+        background-color: @color-white;
+        border: @border-width__base solid @border-color__base;
+        bottom: 30px;
+        position: fixed;
+        right: -62px;
+        padding: 20px;
+        text-orientation: upright;
+        writing-mode: vertical-rl;
+
+        &.active {
+            right: 0;
+        }
+    }
+
+    #dv-campus-customer-preferences-sidebar {
+        background-color: @color-white;
+        border: @border-width__base solid @border-color__base;
+        bottom: 30px;
+        display: block;
+        max-height: 400px;
+        padding: 30px;
+        position: fixed;
+        right: -360px;
+        transition-property: right;
+        transition-duration: .3s;
+        overflow-y: scroll;
+        width: 300px;
+
+        &.active {
+            right: 0;
+        }
+    }
+
+    #dv-campus-customer-preferences-form {
+        padding-bottom: @modal-popup__padding;
+    }
+}

@@ -1,0 +1,56 @@
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<div style="display: none;">
+    <form class="form"
+          action="javascript:void(0);"
+          id="dv-campus-customer-preferences-form"
+          method="post"
+          data-mage-init='{"dvCampus_customerPreferences_form":{
+            "action": "<?= $block->escapeUrl($block->getUrl('dvCampus/preferences/save')) ?>"
+          }}'
+          onsubmit="return false;"
+    >
+        <fieldset class="fieldset">
+            <legend class="legend">
+                <span><?= $block->escapeHtml(__('Edit Preferences')) ?></span>
+            </legend>
+            <br/>
+            <div class="field note no-label">
+                <?= $block->escapeHtml(__('Available settings:')) ?>
+            </div>
+            <div class="field name required">
+                <label class="label" for="name">
+                    <span><?= $block->escapeHtml(__('Size')) /* @TODO: get attribute label translation */?></span>
+                </label>
+                <div class="control">
+                    <input name="size"
+                           title="<?= $block->escapeHtmlAttr(__('Size')) ?>"
+                           class="input-text"
+                           type="text"
+                           data-validate="{required:true}"
+                    />
+                </div>
+            </div>
+            <div class="field email required">
+                <label class="label" for="email">
+                    <span><?= $block->escapeHtml(__('Color')) ?></span>
+                </label>
+                <div class="control">
+                    <input name="color"
+                           title="<?= $block->escapeHtmlAttr(__('Color')) ?>"
+                           class="input-text"
+                           type="text"
+                           data-validate="{required:true}"
+                    />
+                </div>
+            </div>
+        </fieldset>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <input type="hidden" name="hideit" id="hideit" value=""/>
+                <button type="submit" title="<?= $block->escapeHtmlAttr(__('Save')) ?>" class="action submit primary">
+                    <span><?= $block->escapeHtml(__('Save')) ?></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
