@@ -1,0 +1,15 @@
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<div id="dv-campus-customer-preferences-sidebar"
+     style="display: none;"
+     data-mage-init='{"dvCampus_customerPreferences_sidebar": {}}'
+>
+    <h3><?= $block->escapeHtml(__('My Preferences')) ?></h3>
+    <ul id="dv-campus-customer-preferences-list"></ul>
+    <button type="button"
+            class="action primary"
+            id="dv-campus-customer-preferences-edit-button"
+    ><?= $block->escapeHtml(__('Edit Preferences')) ?></button>
+    <button type="button"
+            id="dv-campus-customer-preferences-close-sidebar-button"
+    ><?= $block->escapeHtml(__('Close')) ?></button>
+</div>

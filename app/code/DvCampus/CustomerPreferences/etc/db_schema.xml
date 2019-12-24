@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="dv_campus_customer_preferences" resource="default" engine="innodb" comment="Customer Preferences">
+        <column xsi:type="int" name="preference_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Preference ID"
+        />
+        <column xsi:type="int" name="customer_id" padding="10" unsigned="true" nullable="false"
+                comment="Customer ID"
+        />
+        <column xsi:type="smallint" name="attribute_id" padding="5" unsigned="true" nullable="false"
+                comment="Customer ID"
+        />
+        <column xsi:type="smallint" name="website_id" padding="5" unsigned="true" nullable="false"
+                comment="Website ID"
+        />
+        <column xsi:type="varchar" name="preferred_values" nullable="true" length="255" onCreate="migrateDataFrom(prefered_values)"
+                comment="Preferred Value"
+        />
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Creation Time"
+        />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="preference_id"/>
+        </constraint>
+        <index referenceId="DV_CAMPUS_CSTR_PREFERENCES_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="DV_CAMPUS_CSTR_PREFERENCES_ATTRIBUTE_ID" indexType="btree">
+            <column name="attribute_id"/>
+        </index>
+        <index referenceId="DV_CAMPUS_CSTR_PREFERENCES_WEBSITE_ID" indexType="btree">
+            <column name="website_id"/>
+        </index>
+        <constraint xsi:type="foreign"
+                    referenceId="DV_CAMPUS_CSTR_PREFERENCES_ATTR_ID_EAV_ATTR_ATTR_ID"
+                    table="dv_campus_customer_preferences"
+                    column="customer_id"
+                    referenceTable="customer_entity"
+                    referenceColumn="entity_id"
+                    onDelete="CASCADE"
+        />
+        <constraint xsi:type="foreign"
+                    referenceId="DV_CAMPUS_CSTR_PREFERENCES_CSTR_ID_CSTR_ENTT_ENTT_ID"
+                    table="dv_campus_customer_preferences"
+                    column="attribute_id"
+                    referenceTable="eav_attribute"
+                    referenceColumn="attribute_id"
+                    onDelete="CASCADE"
+        />
+        <constraint xsi:type="foreign"
+                    referenceId="DV_CAMPUS_CSTR_PREFERENCES_WS_ID_STORE_WS_WS_ID"
+                    table="dv_campus_customer_preferences"
+                    column="website_id"
+                    referenceTable="store_website"
+                    referenceColumn="website_id"
+                    onDelete="CASCADE"
+        />
+        <constraint xsi:type="unique"
+                    referenceId="DV_CAMPUS_CSTR_PREFERENCES_CSTR_ID_ATTR_ID_WS_ID"
+        >
+            <column name="customer_id"/>
+            <column name="attribute_id"/>
+            <column name="website_id"/>
+        </constraint>
+    </table>
+</schema>
