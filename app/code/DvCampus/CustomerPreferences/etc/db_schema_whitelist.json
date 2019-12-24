@@ -9,16 +9,16 @@
             "created_at": true
         },
         "index": {
-            "DV_CAMPUS_CSTR_PREFERENCES_CSTR_ID_CSTR_ENTT_ENTT_ID": true,
-            "DV_CAMPUS_CSTR_PREFERENCES_ATTR_ID_EAV_ATTR_ATTR_ID": true,
-            "DV_CAMPUS_CSTR_PREFERENCES_WS_ID_STORE_WS_WS_ID": true,
-            "DV_CAMPUS_CSTR_PREFERENCES_CSTR_ID_ATTR_ID_WS_ID": true
+            "DV_CAMPUS_CSTR_PREFERENCES_CUSTOMER_ID": true,
+            "DV_CAMPUS_CSTR_PREFERENCES_ATTRIBUTE_ID": true,
+            "DV_CAMPUS_CSTR_PREFERENCES_WEBSITE_ID": true
         },
         "constraint": {
             "PRIMARY": true,
             "DV_CAMPUS_CSTR_PREFERENCES_ATTR_ID_EAV_ATTR_ATTR_ID": true,
             "DV_CAMPUS_CSTR_PREFERENCES_CSTR_ID_CSTR_ENTT_ENTT_ID": true,
-            "DV_CAMPUS_CSTR_PREFERENCES_WS_ID_STORE_WS_WS_ID": true
+            "DV_CAMPUS_CSTR_PREFERENCES_WS_ID_STORE_WS_WS_ID": true,
+            "DV_CAMPUS_CSTR_PREFERENCES_CSTR_ID_ATTR_ID_WS_ID": true
         }
     }
 }

@@ -23,6 +23,15 @@
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="preference_id"/>
         </constraint>
+        <index referenceId="DV_CAMPUS_CSTR_PREFERENCES_CUSTOMER_ID" indexType="btree">
+            <column name="customer_id"/>
+        </index>
+        <index referenceId="DV_CAMPUS_CSTR_PREFERENCES_ATTRIBUTE_ID" indexType="btree">
+            <column name="attribute_id"/>
+        </index>
+        <index referenceId="DV_CAMPUS_CSTR_PREFERENCES_WEBSITE_ID" indexType="btree">
+            <column name="website_id"/>
+        </index>
         <constraint xsi:type="foreign"
                     referenceId="DV_CAMPUS_CSTR_PREFERENCES_ATTR_ID_EAV_ATTR_ATTR_ID"
                     table="dv_campus_customer_preferences"
