@@ -1,15 +1,18 @@
 <?php
-declare(strict_types=1);
 
-namespace DvCampus\CustomerPreferences\Setup;
+namespace DvCampus\CustomerPreferences\Setup\Patch\Data;
 
-use Magento\Framework\Setup\ModuleContextInterface;
-use Magento\Framework\Setup\ModuleDataSetupInterface;
-use Magento\Framework\Setup\UpgradeDataInterface;
 use Magento\Framework\Component\ComponentRegistrar;
 
-class UpgradeData implements UpgradeDataInterface
+class InstallDemoData implements
+    \Magento\Framework\Setup\Patch\DataPatchInterface,
+    \Magento\Framework\Setup\Patch\PatchVersionInterface
 {
+    /**
+     * @var \Magento\Framework\Setup\ModuleDataSetupInterface $moduleDataSetup
+     */
+    private $moduleDataSetup;
+
     /**
      * @var \Magento\Framework\File\Csv $csv
      */
@@ -22,41 +25,31 @@ class UpgradeData implements UpgradeDataInterface
 
     /**
      * UpgradeData constructor.
+     * @param \Magento\Framework\Setup\ModuleDataSetupInterface $moduleDataSetup
      * @param \Magento\Framework\Component\ComponentRegistrar $componentRegistrar
      * @param \Magento\Framework\File\Csv $csv
      */
     public function __construct(
+        \Magento\Framework\Setup\ModuleDataSetupInterface $moduleDataSetup,
         \Magento\Framework\Component\ComponentRegistrar $componentRegistrar,
         \Magento\Framework\File\Csv $csv
     ) {
+        $this->moduleDataSetup = $moduleDataSetup;
         $this->componentRegistrar = $componentRegistrar;
         $this->csv = $csv;
     }
-    /**
-     * {@inheritdoc}
-     */
-    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
-    {
-        $setup->startSetup();
 
-        if (version_compare($context->getVersion(), '1.0.2') < 0) {
-            $this->installDemoPreferences($setup, 'data.csv');
-        }
-
-        $setup->endSetup();
-    }
     /**
-     * @param ModuleDataSetupInterface $setup
      * @return void
      * @throws \Exception
      */
-    private function installDemoPreferences(ModuleDataSetupInterface $setup): void
+    public function apply(): void
     {
-        $connection = $setup->getConnection();
+        $connection = $this->moduleDataSetup->getConnection();
         $filePath = $this->componentRegistrar->getPath(ComponentRegistrar::MODULE, 'DvCampus_CustomerPreferences')
             . DIRECTORY_SEPARATOR . 'etc' . DIRECTORY_SEPARATOR . 'data.csv';
 
-        $tableName = $setup->getTable('dv_campus_customer_preferences');
+        $tableName = $this->moduleDataSetup->getTable('dv_campus_customer_preferences');
         $csvData = $this->csv->getData($filePath);
 
         try {
@@ -70,7 +63,7 @@ class UpgradeData implements UpgradeDataInterface
             foreach ($csvData as $rowNumber => $data) {
                 $insertedData = array_combine($columns, $data);
 
-                $setup->getConnection()->insertOnDuplicate(
+                $connection->insertOnDuplicate(
                     $tableName,
                     $insertedData,
                     $columns
@@ -82,5 +75,29 @@ class UpgradeData implements UpgradeDataInterface
             $connection->rollBack();
             throw $e;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAliases(): array
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDependencies(): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getVersion()
+    {
+        return '1.0.2';
     }
 }
