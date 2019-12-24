@@ -4,17 +4,21 @@
             "preference_id": true,
             "customer_id": true,
             "attribute_id": true,
-            "demo": true,
+            "website_id": true,
+            "prefered_values": true,
             "created_at": true
         },
         "index": {
             "DV_CAMPUS_CSTR_PREFERENCES_CSTR_ID_CSTR_ENTT_ENTT_ID": true,
-            "DV_CAMPUS_CSTR_PREFERENCES_ATTR_ID_EAV_ATTR_ATTR_ID": true
+            "DV_CAMPUS_CSTR_PREFERENCES_ATTR_ID_EAV_ATTR_ATTR_ID": true,
+            "DV_CAMPUS_CSTR_PREFERENCES_WS_ID_STORE_WS_WS_ID": true,
+            "DV_CAMPUS_CSTR_PREFERENCES_CSTR_ID_ATTR_ID_WS_ID": true
         },
         "constraint": {
             "PRIMARY": true,
             "DV_CAMPUS_CSTR_PREFERENCES_ATTR_ID_EAV_ATTR_ATTR_ID": true,
-            "DV_CAMPUS_CSTR_PREFERENCES_CSTR_ID_CSTR_ENTT_ENTT_ID": true
+            "DV_CAMPUS_CSTR_PREFERENCES_CSTR_ID_CSTR_ENTT_ENTT_ID": true,
+            "DV_CAMPUS_CSTR_PREFERENCES_WS_ID_STORE_WS_WS_ID": true
         }
     }
 }
