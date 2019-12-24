@@ -57,7 +57,7 @@ class InstallDemoData implements
             $columns = [
                 'customer_id',
                 'attribute_id',
-                'prefered_values',
+                'preferred_values',
             ];
 
             foreach ($csvData as $rowNumber => $data) {

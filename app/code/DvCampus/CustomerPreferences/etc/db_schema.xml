@@ -14,7 +14,7 @@
         <column xsi:type="smallint" name="website_id" padding="5" unsigned="true" nullable="false"
                 comment="Website ID"
         />
-        <column xsi:type="varchar" name="preferred_values" nullable="true" length="255" onCreate="migrateDataFrom(preferred_values)"
+        <column xsi:type="varchar" name="preferred_values" nullable="true" length="255" onCreate="migrateDataFrom(prefered_values)"
                 comment="Preferred Value"
         />
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
