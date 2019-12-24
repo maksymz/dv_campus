@@ -5,7 +5,7 @@
             "customer_id": true,
             "attribute_id": true,
             "website_id": true,
-            "prefered_values": true,
+            "preferred_values": true,
             "created_at": true
         },
         "index": {
