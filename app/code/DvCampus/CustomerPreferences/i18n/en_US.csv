@@ -1,4 +1,6 @@
+"Attribute with ID %s is not a product attribute.","Attribute with ID %s is not a product attribute."
 "Available settings:","Available settings:"
+"Can't save customer preferences: %s is not set.","Can't save customer preferences: %s is not set."
 "Close","Close"
 "Edit Preferences","Edit Preferences"
 "Error","Error"

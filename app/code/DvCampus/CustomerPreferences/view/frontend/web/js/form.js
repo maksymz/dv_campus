@@ -65,13 +65,14 @@ define([
                     $('body').trigger('processStart');
                 },
 
+                // @TODO: in case or connection or server-side error - show mailto link
                 /** @inheritdoc */
                 success: function (response) {
                     $('body').trigger('processStop');
                     // @TODO: show new preferences
                     alert({
                         title: $.mage.__('Success'),
-                        content: $.mage.__(response.message)
+                        content: response.message
                     });
                 },
 

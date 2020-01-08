@@ -22,7 +22,7 @@
                     <span><?= $block->escapeHtml(__('Size')) /* @TODO: get attribute label translation */?></span>
                 </label>
                 <div class="control">
-                    <input name="size"
+                    <input name="attributes[size]"
                            title="<?= $block->escapeHtmlAttr(__('Size')) ?>"
                            class="input-text"
                            type="text"
@@ -35,7 +35,7 @@
                     <span><?= $block->escapeHtml(__('Color')) ?></span>
                 </label>
                 <div class="control">
-                    <input name="color"
+                    <input name="attributes[color]"
                            title="<?= $block->escapeHtmlAttr(__('Color')) ?>"
                            class="input-text"
                            type="text"
