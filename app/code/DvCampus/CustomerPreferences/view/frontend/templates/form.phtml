@@ -1,4 +1,4 @@
-<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<?php /** @var \DvCampus\CustomerPreferences\Block\Form $block */ ?>
 <div style="display: none;">
     <form class="form"
           action="javascript:void(0);"
@@ -17,32 +17,21 @@
             <div class="field note no-label">
                 <?= $block->escapeHtml(__('Available settings:')) ?>
             </div>
-            <div class="field name required">
-                <label class="label" for="name">
-                    <span><?= $block->escapeHtml(__('Size')) /* @TODO: get attribute label translation */?></span>
-                </label>
-                <div class="control">
-                    <input name="attributes[size]"
-                           title="<?= $block->escapeHtmlAttr(__('Size')) ?>"
-                           class="input-text"
-                           type="text"
-                           data-validate="{required:true}"
-                    />
+            <?php foreach ($block->getAttributeCollection() as $attribute) : ?>
+                <div class="field required">
+                    <label class="label" for="name">
+                        <span><?= $block->escapeHtml($attribute->getStoreLabel()) ?></span>
+                    </label>
+                    <div class="control">
+                        <input name="attributes[<?= $attribute->getAttributeCode() ?>>]"
+                               title="<?= $block->escapeHtml($attribute->getStoreLabel()) ?>"
+                               class="input-text"
+                               type="text"
+                               data-validate="{required:true}"
+                        />
+                    </div>
                 </div>
-            </div>
-            <div class="field email required">
-                <label class="label" for="email">
-                    <span><?= $block->escapeHtml(__('Color')) ?></span>
-                </label>
-                <div class="control">
-                    <input name="attributes[color]"
-                           title="<?= $block->escapeHtmlAttr(__('Color')) ?>"
-                           class="input-text"
-                           type="text"
-                           data-validate="{required:true}"
-                    />
-                </div>
-            </div>
+            <?php endforeach; ?>
         </fieldset>
         <div class="actions-toolbar">
             <div class="primary">

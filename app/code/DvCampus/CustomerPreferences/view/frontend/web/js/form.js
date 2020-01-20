@@ -69,7 +69,6 @@ define([
                 /** @inheritdoc */
                 success: function (response) {
                     $('body').trigger('processStop');
-                    // @TODO: show new preferences
                     alert({
                         title: $.mage.__('Success'),
                         content: response.message
