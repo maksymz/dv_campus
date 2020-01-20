@@ -33,7 +33,8 @@ services:
     # Must add extra_hosts to be written to /etc/hosts - otherwise containerized application can not curl itself
     extra_hosts:
       - "maksym-zaporozhets.local www.maksym-zaporozhets.local maksym-zaporozhets-additional.local www.maksym-zaporozhets-additional.local:127.0.0.1"
-#    links:
+    links:
+      - redis
 #      - memcached
     external_links:
       - mysql57:mysql
@@ -44,6 +45,13 @@ services:
       - .:/var/www/html
       - /misc/share/ssl:/certs
       - ./docker/virtual-host.conf:/etc/apache2/sites-enabled/virtual-host.conf
+
+  redis:
+    image: redis:latest
+    network_mode: bridge
+    labels:
+      - traefik.enable=false
+    restart: always
 
 #  memcached:
 #    image: 'memcached:1.5'
