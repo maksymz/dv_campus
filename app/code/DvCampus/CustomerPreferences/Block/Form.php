@@ -28,12 +28,29 @@ class Form extends \Magento\Framework\View\Element\Template
     }
 
     /**
+     * @inheritDoc
+     */
+    protected function _construct(): void
+    {
+        parent::_construct();
+
+        $this->addData(
+            [
+                'cache_lifetime' => 86400,
+                'cache_tags' => [
+                    \Magento\Catalog\Model\Product::CACHE_TAG,
+                    \Magento\Eav\Model\Cache\Type::CACHE_TAG
+                ]
+            ]
+        );
+    }
+
+    /**
      * @return AttributeCollection
      */
     public function getAttributeCollection(): AttributeCollection
     {
         // @TODO: too many attributes at once. Need to add configuration not to use all of them!
-        // @TODO: show caching with codes/labels
         /** @var AttributeCollection $attributeCollection */
         $attributeCollection = $this->attributeCollectionFactory->create();
         $attributeCollection->addIsFilterableFilter();
