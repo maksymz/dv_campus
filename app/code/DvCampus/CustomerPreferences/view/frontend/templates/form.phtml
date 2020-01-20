@@ -18,7 +18,7 @@
                 <?= $block->escapeHtml(__('Available settings:')) ?>
             </div>
             <?php foreach ($block->getAttributeCollection() as $attribute) : ?>
-                <div class="field required">
+                <div class="field">
                     <label class="label" for="name">
                         <span><?= $block->escapeHtml($attribute->getStoreLabel()) ?></span>
                     </label>
@@ -27,7 +27,6 @@
                                title="<?= $block->escapeHtml($attribute->getStoreLabel()) ?>"
                                class="input-text"
                                type="text"
-                               data-validate="{required:true}"
                         />
                     </div>
                 </div>
