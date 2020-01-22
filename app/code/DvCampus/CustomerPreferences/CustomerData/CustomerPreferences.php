@@ -49,13 +49,12 @@ class CustomerPreferences implements \Magento\Customer\CustomerData\SectionSourc
             $data = [];
             /** @var PreferenceCollection $preferenceCollection */
             $preferenceCollection = $this->preferenceCollectionFactory->create();
-            // SHOW WITHOUT int typecast and where to see error message!!!!!!!!!!!!!!!!
             $preferenceCollection->addCustomerFilter((int) $this->customerSession->getId())
                 ->addWebsiteFilter((int) $this->storeManager->getWebsite()->getId());
 
             /** @var Preference $customerPreference */
             foreach ($preferenceCollection as $customerPreference) {
-                $data[$customerPreference->getAttributeCode()] = $customerPreference;
+                $data[$customerPreference->getAttributeCode()] = $customerPreference->getPreferredValues();
             }
         } else {
             $data = $this->customerSession->getData('customer_preferences') ?? [];
