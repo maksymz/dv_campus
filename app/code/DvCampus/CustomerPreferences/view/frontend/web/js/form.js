@@ -1,8 +1,9 @@
 define([
     'jquery',
+    'Magento_Customer/js/customer-data',
     'Magento_Ui/js/modal/alert',
     'Magento_Ui/js/modal/modal'
-], function ($, alert) {
+], function ($, customerData, alert) {
     'use strict';
 
     $.widget('dvCampusCustomerPreferences.form', {
@@ -19,6 +20,11 @@ define([
             });
 
             $(this.element).on('submit.dvCampus_customerPreferences', $.proxy(this.savePreferences, this));
+
+            console.log(customerData.get('customer-preferences')());
+            customerData.get('customer-preferences').subscribe(function (value) {
+                console.log(value);
+            });
         },
 
         _destroy: function () {
@@ -69,7 +75,6 @@ define([
                 /** @inheritdoc */
                 success: function (response) {
                     $('body').trigger('processStop');
-                    // @TODO: show new preferences
                     alert({
                         title: $.mage.__('Success'),
                         content: response.message
