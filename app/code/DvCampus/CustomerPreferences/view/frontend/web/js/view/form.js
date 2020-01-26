@@ -37,6 +37,15 @@ define([
         },
 
         /**
+         * Init modal from the component HTML
+         */
+        initModal: function () {
+            this.modal = $('#dv-campus-customer-preferences-form').modal({
+                buttons: []
+            });
+        },
+
+        /**
          * Submit request via AJAX. Add form key to the post data.
          */
         savePreferences: function () {
@@ -73,24 +82,17 @@ define([
                     $('body').trigger('processStop');
                     alert({
                         title: $.mage.__('Error'),
-                        content: $.mage.__('Your preferences can\'t be saved. Please, contact us if ypu see this message.')
+                        content: $.mage.__(
+                            'Your preferences can\'t be saved. Please, contact us if ypu see this message.'
+                        )
                     });
+                },
+
+                /** @inheritdoc */
+                complete: function () {
+                    this.modal.modal('closeModal');
                 }
             });
         }
-    });
-
-    // Start rewriting form into the Knockout component
-    $.widget('dvCampusCustomerPreferences.form', {
-        /**
-         * @private
-         */
-        _create: function () {
-            this.modal = $(this.element).modal({
-                buttons: []
-            });
-
-            $(this.element).on('submit.dvCampus_customerPreferences', $.proxy(this.savePreferences, this));
-        },
     });
 });
