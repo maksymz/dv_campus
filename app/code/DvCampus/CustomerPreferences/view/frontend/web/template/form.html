@@ -1,0 +1,41 @@
+<form class="form"
+      action="javascript:void(0);"
+      id="dv-campus-customer-preferences-form"
+      method="post"
+      onsubmit="return false;"
+>
+    <fieldset class="fieldset">
+        <legend class="legend">
+            <span><?= $block->escapeHtml(__('Edit Preferences')) ?></span>
+        </legend>
+        <br/>
+        <div class="field note no-label">
+            <?= $block->escapeHtml(__('Available settings:')) ?>
+        </div>
+        <?php foreach ($block->getAttributeCollection() as $attribute) : ?>
+        <div class="field">
+            <label class="label" for="name">
+                <span><?= $block->escapeHtml($attribute->getStoreLabel()) ?></span>
+            </label>
+            <div class="control">
+                <input data-bind="
+                        value: inputValue,
+                    "
+                    name="attributes[<?= $attribute->getAttributeCode() ?>]"
+                    title="<?= $block->escapeHtml($attribute->getStoreLabel()) ?>"
+                    class="input-text"
+                    type="text"
+                />
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </fieldset>
+    <div class="actions-toolbar">
+        <div class="primary">
+            <input type="hidden" name="hideit" id="hideit" value=""/>
+            <button type="submit" title="<?= $block->escapeHtmlAttr(__('Save')) ?>" class="action submit primary">
+                <span><?= $block->escapeHtml(__('Save')) ?></span>
+            </button>
+        </div>
+    </div>
+</form>
