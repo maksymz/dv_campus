@@ -3,16 +3,21 @@ define([
     'ko',
     'uiComponent',
     'Magento_Customer/js/customer-data',
+    'DvCampus_CustomerPreferences/js/model/customer-preferences',
     'Magento_Ui/js/modal/alert',
     'Magento_Ui/js/modal/modal'
-], function ($, ko, Component, customerData, alert) {
+], function ($, ko, Component, customerData, customerPreferencesModel, alert) {
     'use strict';
 
     return Component.extend({
         defaults: {
-            template: 'DvCampus_CustomerPreferences/form'
+            template: 'DvCampus_CustomerPreferences/form',
+            customerPreferences: customerData.get('customer-preferences'),
+            attributes: [],
+            listens: {
+                customerPreferences: 'updateCustomerPreferences'
+            }
         },
-        attributes: {},
 
         /** @inheritdoc */
         initialize: function () {
@@ -22,28 +27,24 @@ define([
                 'dvCampus_CustomerPreferences_editPreferences.dvCampus_customerPreferences',
                 $.proxy(this.openModal, this)
             );
+
+            // value must be observable - otherwise the list will not be rendered when customerData is updated
+            this.attributes.forEach(function (attributeData) {
+                attributeData.value = ko.observable('');
+            });
+
+            this.updateCustomerPreferences(this.customerPreferences());
         },
 
         /**
-         * Watch customer data change and update input values
+         * Populate customer preferences with data from the localStorage
          */
-        initObservable: function () {
-            var customerPreferences = customerData.get('customer-preferences')();
-
-            this._super();
-
-            // @TODO: JS may break if new attributes are added
+        updateCustomerPreferences: function (newCustomerPreferences) {
             this.attributes.forEach(function (attributeData) {
-                attributeData.value = customerPreferences[attributeData['attribute_code']];
+                attributeData.value(newCustomerPreferences[attributeData['attribute_code']]);
             });
 
-            customerData.get('customer-preferences').subscribe(function (newCustomerPreferences) {
-                this.attributes.forEach(function (attributeData) {
-                    attributeData.value = newCustomerPreferences[attributeData['attribute_code']];
-                });
-            }.bind(this));
-
-            return this;
+            customerPreferencesModel.preferences(this.attributes);
         },
 
         /**
