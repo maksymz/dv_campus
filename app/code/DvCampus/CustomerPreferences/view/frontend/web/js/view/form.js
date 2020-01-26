@@ -12,16 +12,10 @@ define([
         defaults: {
             template: 'DvCampus_CustomerPreferences/form'
         },
+        attributes: {},
 
-        inputValue: ko.observable(),
-
-        initObservable: function () {
-            this._super();
-            this.inputValue.subscribe(function (newValue) {
-                console.log(newValue);
-            });
-
-            return this;
+        savePreferences: function () {
+            console.log(this.attributes);
         }
     });
 

@@ -3,38 +3,42 @@
       id="dv-campus-customer-preferences-form"
       method="post"
       onsubmit="return false;"
+      data-bind="submit: savePreferences"
 >
     <fieldset class="fieldset">
         <legend class="legend">
-            <span><?= $block->escapeHtml(__('Edit Preferences')) ?></span>
+            <span translate="'Edit Preferences'"></span>
         </legend>
         <br/>
-        <div class="field note no-label">
-            <?= $block->escapeHtml(__('Available settings:')) ?>
-        </div>
-        <?php foreach ($block->getAttributeCollection() as $attribute) : ?>
-        <div class="field">
-            <label class="label" for="name">
-                <span><?= $block->escapeHtml($attribute->getStoreLabel()) ?></span>
+        <div class="field note no-label" data-bind="i18n: 'Available settings:'"></div>
+        <div class="field" repeat="foreach: attributes, item: '$attribute'">
+            <label class="label" data-bind="attr: { for: 'customer-preferences-' + $attribute().attribute_code }">
+                <span text="$attribute().attribute_label" />
             </label>
             <div class="control">
                 <input data-bind="
-                        value: inputValue,
+                        value: $attribute().value,
+                        attr: {
+                            id: 'customer-preferences-' + $attribute().attribute_code,
+                            name: $attribute().attribute_code,
+                            title: $attribute().attribute_label,
+                            placeholder: $attribute().attribute_label
+                        }
                     "
-                    name="attributes[<?= $attribute->getAttributeCode() ?>]"
-                    title="<?= $block->escapeHtml($attribute->getStoreLabel()) ?>"
                     class="input-text"
                     type="text"
                 />
             </div>
         </div>
-        <?php endforeach; ?>
     </fieldset>
     <div class="actions-toolbar">
         <div class="primary">
             <input type="hidden" name="hideit" id="hideit" value=""/>
-            <button type="submit" title="<?= $block->escapeHtmlAttr(__('Save')) ?>" class="action submit primary">
-                <span><?= $block->escapeHtml(__('Save')) ?></span>
+            <button type="submit"
+                    class="action submit primary"
+                    data-bind="attr: { title: $t('Save') }"
+            >
+                <span translate="'Save'"></span>
             </button>
         </div>
     </div>
