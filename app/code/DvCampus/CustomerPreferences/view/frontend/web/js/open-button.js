@@ -15,16 +15,23 @@ define([
          */
         _create: function () {
             $(this.element).on('click.dvCampus_customerPreferences', $.proxy(this.openPreferences, this));
-            $(this.element).on('dvCampus_CustomerPreferences_closePreferences.dvCampus_customerPreferences', $.proxy(this.closePreferences, this));
+
+            // generate unique hash to bind/unbind events only for this widget instance
+            this.hash = Math.random().toString(36).substr(2, 9);
+            $(document).on(
+                'dvCampus_CustomerPreferences_closePreferences.' + this.hash,
+                $.proxy(this.closePreferences, this)
+            );
         },
 
         /**
-         * jQuery(jQuery('.dv-campus-customer-preferences-open-button').get(0)).data('dvCampusCustomerPreferencesOpenButton').destroy()
          * @private
          */
         _destroy: function () {
             $(this.element).off('click.dvCampus_customerPreferences');
-            $(this.element).off('dvCampus_CustomerPreferences_closePreferences.dvCampus_customerPreferences');
+            $(this.element).off(
+                'dvCampus_CustomerPreferences_closePreferences.' + this.hash
+            );
         },
 
         /**

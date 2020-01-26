@@ -14,6 +14,16 @@ define([
         },
         attributes: {},
 
+        /** @inheritdoc */
+        initialize: function () {
+            this._super();
+
+            $(document).on(
+                'dvCampus_CustomerPreferences_editPreferences.dvCampus_customerPreferences',
+                $.proxy(this.openModal, this)
+            );
+        },
+
         /**
          * Watch customer data change and update input values
          */
@@ -39,10 +49,17 @@ define([
         /**
          * Init modal from the component HTML
          */
-        initModal: function () {
-            this.modal = $('#dv-campus-customer-preferences-form').modal({
+        initModal: function (formElement) {
+            this.modal = $(formElement).modal({
                 buttons: []
             });
+        },
+
+        /**
+         * Open modal form with preferences for editing
+         */
+        openModal: function () {
+            this.modal.modal('openModal');
         },
 
         /**
