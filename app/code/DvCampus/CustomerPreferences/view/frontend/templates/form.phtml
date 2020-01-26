@@ -10,7 +10,8 @@
                 "components": {
                     "customerPreferencesForm": {
                         "component": "dvCampus_customerPreferences_form",
-                        "attributes": <?= $block->getAttributesJson() ?>
+                        "attributes": <?= $block->getAttributesJson() ?>,
+                        "action": "<?= $block->escapeUrl($block->getUrl('dv_campus_customer_preferences/preferences/save')) ?>"
                     }
                 }
             }

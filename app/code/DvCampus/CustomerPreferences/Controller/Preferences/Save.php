@@ -114,7 +114,7 @@ class Save extends \Magento\Framework\App\Action\Action implements
                 /** @var Transaction $transaction */
                 $transaction = $this->transactionFactory->create();
 
-                foreach ($request->getParam('attributes') as $attributeCode => $value) {
+                foreach ($this->getPreferencesFromRequest() as $attributeCode => $value) {
                     if (isset($preferencesByAttributeCode[$attributeCode])) {
                         $preference = $preferencesByAttributeCode[$attributeCode];
 
@@ -139,7 +139,7 @@ class Save extends \Magento\Framework\App\Action\Action implements
             } else {
                 $preferencesByAttributeCode = array_merge(
                     $this->customerSession->getData('customer_preferences') ?? [],
-                    $request->getParam('attributes')
+                    $this->getPreferencesFromRequest()
                 );
                 $this->customerSession->setCustomerPreferences($preferencesByAttributeCode);
                 $message = __('Your preferences have been updated. Please, log in to save them permanently.');
@@ -158,5 +158,19 @@ class Save extends \Magento\Framework\App\Action\Action implements
         ]);
 
         return $response;
+    }
+
+    /**
+     * @return array
+     */
+    private function getPreferencesFromRequest(): array
+    {
+        $preferencesByAttributeCode = [];
+
+        foreach ($this->getRequest()->getParam('attributes') as $data) {
+            $preferencesByAttributeCode[$data['attribute_code']] = $data['value'] ?? '';
+        }
+
+        return $preferencesByAttributeCode;
     }
 }

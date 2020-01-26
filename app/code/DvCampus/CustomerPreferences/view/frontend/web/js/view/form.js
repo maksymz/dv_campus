@@ -14,68 +14,41 @@ define([
         },
         attributes: {},
 
-        savePreferences: function () {
-            console.log(this.attributes);
-        }
-    });
-
-    // Start rewriting form into the Knockout component
-    $.widget('dvCampusCustomerPreferences.form', {
-        options: {
-            action: ''
-        },
-
         /**
-         * @private
+         * Watch customer data change and update input values
          */
-        _create: function () {
-            this.modal = $(this.element).modal({
-                buttons: []
+        initObservable: function () {
+            var customerPreferences = customerData.get('customer-preferences')();
+
+            this._super();
+
+            // @TODO: JS may break if new attributes are added
+            this.attributes.forEach(function (attributeData) {
+                attributeData.value = customerPreferences[attributeData['attribute_code']];
             });
 
-            $(this.element).on('submit.dvCampus_customerPreferences', $.proxy(this.savePreferences, this));
+            customerData.get('customer-preferences').subscribe(function (newCustomerPreferences) {
+                this.attributes.forEach(function (attributeData) {
+                    attributeData.value = newCustomerPreferences[attributeData['attribute_code']];
+                });
+            }.bind(this));
 
-            console.log(customerData.get('customer-preferences')());
-            customerData.get('customer-preferences').subscribe(function (value) {
-                console.log(value);
-            });
-        },
-
-        _destroy: function () {
-            this.modal.closeModal();
-            $(this.element).off('submit.dvCampus_customerPreferences');
-            this.modal.destroy();
-        },
-
-        savePreferences: function () {
-            if (!this.validateForm()) {
-                return;
-            }
-
-            this.ajaxSubmit();
-        },
-
-        /**
-         * Validate request form
-         */
-        validateForm: function () {
-            return $(this.element).validation().valid();
+            return this;
         },
 
         /**
          * Submit request via AJAX. Add form key to the post data.
          */
-        ajaxSubmit: function () {
-            var formData = new FormData($(this.element).get(0));
-
-            formData.append('form_key', $.mage.cookies.get('form_key'));
-            formData.append('isAjax', 1);
+        savePreferences: function () {
+            var payload = {
+                attributes: this.attributes,
+                'form_key': $.mage.cookies.get('form_key'),
+                isAjax: 1
+            };
 
             $.ajax({
-                url: this.options.action,
-                data: formData,
-                processData: false,
-                contentType: false,
+                url: this.action,
+                data: payload,
                 type: 'post',
                 dataType: 'json',
                 context: this,
@@ -104,8 +77,20 @@ define([
                     });
                 }
             });
-        },
+        }
     });
 
-    return $.dvCampusCustomerPreferences.form;
+    // Start rewriting form into the Knockout component
+    $.widget('dvCampusCustomerPreferences.form', {
+        /**
+         * @private
+         */
+        _create: function () {
+            this.modal = $(this.element).modal({
+                buttons: []
+            });
+
+            $(this.element).on('submit.dvCampus_customerPreferences', $.proxy(this.savePreferences, this));
+        },
+    });
 });
