@@ -4,15 +4,16 @@ define([
     'uiComponent',
     'Magento_Customer/js/customer-data',
     'DvCampus_CustomerPreferences/js/model/customer-preferences',
-    'Magento_Ui/js/modal/alert',
+    'DvCampus_CustomerPreferences/js/action/save-preferences',
     'Magento_Ui/js/modal/modal'
-], function ($, ko, Component, customerData, customerPreferencesModel, alert) {
+], function ($, ko, Component, customerData, customerPreferencesModel, savePreferences) {
     'use strict';
 
     return Component.extend({
         defaults: {
             template: 'DvCampus_CustomerPreferences/form',
             customerPreferences: customerData.get('customer-preferences'),
+            action: '',
             attributes: [],
             listens: {
                 customerPreferences: 'updateCustomerPreferences'
@@ -41,7 +42,9 @@ define([
          */
         updateCustomerPreferences: function (newCustomerPreferences) {
             this.attributes.forEach(function (attributeData) {
-                attributeData.value(newCustomerPreferences[attributeData['attribute_code']]);
+                if (newCustomerPreferences[attributeData['attribute_code']] !== undefined) {
+                    attributeData.value(newCustomerPreferences[attributeData['attribute_code']]);
+                }
             });
 
             customerPreferencesModel.preferences(this.attributes);
@@ -73,44 +76,10 @@ define([
                 isAjax: 1
             };
 
-            $.ajax({
-                url: this.action,
-                data: payload,
-                type: 'post',
-                dataType: 'json',
-                context: this,
-
-                /** @inheritdoc */
-                beforeSend: function () {
-                    $('body').trigger('processStart');
-                },
-
-                // @TODO: in case or connection or server-side error - show mailto link
-                /** @inheritdoc */
-                success: function (response) {
-                    $('body').trigger('processStop');
-                    alert({
-                        title: $.mage.__('Success'),
-                        content: response.message
-                    });
-                },
-
-                /** @inheritdoc */
-                error: function () {
-                    $('body').trigger('processStop');
-                    alert({
-                        title: $.mage.__('Error'),
-                        content: $.mage.__(
-                            'Your preferences can\'t be saved. Please, contact us if ypu see this message.'
-                        )
-                    });
-                },
-
-                /** @inheritdoc */
-                complete: function () {
+            savePreferences(payload, this.action)
+                .done(function () {
                     this.modal.modal('closeModal');
-                }
-            });
+                }.bind(this));
         }
     });
 });
