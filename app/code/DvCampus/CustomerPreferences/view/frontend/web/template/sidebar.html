@@ -1,0 +1,20 @@
+<div id="dv-campus-customer-preferences-sidebar" data-bind="attr: { class: sidebarClass }">
+    <h3 translate="'My Preferences'"></h3>
+    <ul id="dv-campus-customer-preferences-list" data-bind="foreach: customerPreferences">
+        <li if="value">
+            <span class="attribute-label" text="attribute_label" />
+            <span class="attribute-label" text="value" />
+        </li>
+    </ul>
+    <button type="button"
+            class="action primary"
+            data-bind="click: editPreferences"
+    >
+        <span translate="'Edit Preferences'"></span>
+    </button>
+    <button type="button"
+            data-bind="click: closeSidebar"
+    >
+        <span translate="'Close'"></span>
+    </button>
+</div>
