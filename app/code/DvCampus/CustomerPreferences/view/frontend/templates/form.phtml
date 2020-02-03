@@ -1,20 +1,11 @@
-<?php /** @var \DvCampus\CustomerPreferences\Block\Form $block */ ?>
-<div data-bind="scope: 'customerPreferencesForm'">
+<?php /** @var \Magento\Framework\View\Element\Template $block */ ?>
+<div id="dv-campus-customer-preferences-form-container" data-bind="scope: 'customerPreferencesForm'">
     <!-- ko template: getTemplate() --><!-- /ko -->
-</div>
-
-<script type="text/x-magento-init">
-    {
-        "*": {
-            "Magento_Ui/js/core/app": {
-                "components": {
-                    "customerPreferencesForm": {
-                        "component": "dvCampus_customerPreferences_form",
-                        "attributes": <?= $block->getAttributesJson() ?>,
-                        "action": "<?= $block->escapeUrl($block->getUrl('dv_campus_customer_preferences/preferences/save')) ?>"
-                    }
-                }
+    <script type="text/x-magento-init">
+        {
+            "#dv-campus-customer-preferences-form-container": {
+                "Magento_Ui/js/core/app": <?= /* @noEscape */ $block->getJsLayout() ?>
             }
         }
-    }
-</script>
+    </script>
+</div>

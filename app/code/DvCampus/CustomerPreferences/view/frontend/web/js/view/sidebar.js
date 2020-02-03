@@ -9,10 +9,6 @@ define([
     'use strict';
 
     return Component.extend({
-        defaults: {
-            template: 'DvCampus_CustomerPreferences/sidebar'
-        },
-
         customerPreferences: customerPreferencesModel.preferences,
         sidebarClass: ko.observable(''),
 
