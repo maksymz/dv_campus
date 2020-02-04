@@ -98,7 +98,7 @@ class Save extends \Magento\Framework\App\Action\Action implements
             $customerId = (int) $this->customerSession->getId();
             $websiteId = (int) $this->storeManager->getWebsite()->getId();
 
-            if ($customerId) {
+            if ($customerId && !$this->customerSession->getData('is_customer_emulated')) {
                 $preferencesByAttributeCode = [];
 
                 /** @var PreferenceCollection $preferenceCollection */
@@ -111,18 +111,24 @@ class Save extends \Magento\Framework\App\Action\Action implements
                     $preferencesByAttributeCode[$existingPreference->getAttributeCode()] = $existingPreference;
                 }
 
-                /** @var Transaction $transaction */
-                $transaction = $this->transactionFactory->create();
+                /** @var Transaction $saveTransaction */
+                $saveTransaction = $this->transactionFactory->create();
+                /** @var Transaction $deleteTransaction */
+                $deleteTransaction = $this->transactionFactory->create();
 
                 foreach ($this->getPreferencesFromRequest() as $attributeCode => $value) {
                     if (isset($preferencesByAttributeCode[$attributeCode])) {
                         $preference = $preferencesByAttributeCode[$attributeCode];
 
                         if ($preference->getPreferredValues() !== $value) {
-                            $preference->setPreferredValues($value);
-                            $transaction->addObject($preference);
+                            if ($value) {
+                                $preference->setPreferredValues($value);
+                                $saveTransaction->addObject($preference);
+                            } else {
+                                $deleteTransaction->addObject($preference);
+                            }
                         }
-                    } else {
+                    } elseif ($value) {
                         /** @var Preference $preference */
                         $preference = $this->preferenceFactory->create();
 
@@ -130,17 +136,23 @@ class Save extends \Magento\Framework\App\Action\Action implements
                             ->setWebsiteId($websiteId)
                             ->setAttributeId($attributeCode)
                             ->setPreferredValues($value);
-                        $transaction->addObject($preference);
+                        $saveTransaction->addObject($preference);
                     }
                 }
 
-                $transaction->save();
+                $saveTransaction->save();
+                $deleteTransaction->delete();
                 $message = __('Your preferences have been updated.');
             } else {
                 $preferencesByAttributeCode = array_merge(
                     $this->customerSession->getData('customer_preferences') ?? [],
                     $this->getPreferencesFromRequest()
                 );
+
+                $preferencesByAttributeCode = array_filter($preferencesByAttributeCode, function($value) {
+                    return $value || $value === '0';
+                });
+
                 $this->customerSession->setCustomerPreferences($preferencesByAttributeCode);
                 $message = __('Your preferences have been updated. Please, log in to save them permanently.');
             }
@@ -168,7 +180,7 @@ class Save extends \Magento\Framework\App\Action\Action implements
         $preferencesByAttributeCode = [];
 
         foreach ($this->getRequest()->getParam('attributes') as $data) {
-            $preferencesByAttributeCode[$data['attribute_code']] = $data['value'] ?? '';
+            $preferencesByAttributeCode[$data['attribute_code']] = trim($data['value']) ?? '';
         }
 
         return $preferencesByAttributeCode;
