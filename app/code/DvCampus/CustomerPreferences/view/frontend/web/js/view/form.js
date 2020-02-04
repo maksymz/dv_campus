@@ -11,7 +11,6 @@ define([
 
     return Component.extend({
         defaults: {
-            template: 'DvCampus_CustomerPreferences/form',
             customerPreferences: customerData.get('customer-preferences'),
             action: '',
             attributes: [],
