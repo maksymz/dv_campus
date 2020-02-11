@@ -1,11 +1,14 @@
-"Attribute with ID %s is not a product attribute.","Attribute with ID %s is not a product attribute."
-"Available settings:","Available settings:"
-"Can't save customer preferences: %s is not set.","Can't save customer preferences: %s is not set."
-"Close","Close"
-"Edit Preferences","Edit Preferences"
-"Error","Error"
-"My Preferences","My Preferences"
-"Save","Save"
-"Your preferences can't be saved. Please, contact us if ypu see this message.","Your preferences can't be saved. Please, contact us if ypu see this message."
+"Unable to save preferences.","Unable to save preferences."
 "Your preferences have been updated.","Your preferences have been updated."
 "Your preferences have been updated. Please, log in to save them permanently.","Your preferences have been updated. Please, log in to save them permanently."
+"Your preferences can't be saved. Please, contact us if ypu see this message.","Your preferences can't be saved. Please, contact us if ypu see this message."
+"Can't save customer preferences: %s is not set.","Can't save customer preferences: %s is not set."
+"Attribute with ID %s is not a product attribute.","Attribute with ID %s is not a product attribute."
+"My Preferences","My Preferences"
+"Available settings:","Available settings:"
+Success,Success
+Error,Error
+"Customer Preferences","Customer Preferences"
+"General Settings","General Settings"
+Enabled,Enabled
+"Allow for Guests","Allow for Guests"

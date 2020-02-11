@@ -8,10 +8,12 @@
                 <block class="Magento\Framework\View\Element\Template"
                        name="dvCampus.customerPreferences.button"
                        template="DvCampus_CustomerPreferences::open_button.phtml"
+                       ifconfig="dvcampus_customer_preferences/general/enabled"
                 />
                 <block class="Magento\Framework\View\Element\Template"
                        name="dvCampus.customerPreferences.customerPreferences"
                        template="DvCampus_CustomerPreferences::sidebar.phtml"
+                       ifconfig="dvcampus_customer_preferences/general/enabled"
                 >
                     <arguments>
                         <argument name="jsLayout" xsi:type="array">
@@ -29,6 +31,7 @@
                 <block class="Magento\Framework\View\Element\Template"
                        name="dvCampus.customerPreferences.form"
                        template="DvCampus_CustomerPreferences::form.phtml"
+                       ifconfig="dvcampus_customer_preferences/general/enabled"
                 >
                     <arguments>
                         <argument name="cache_tags" xsi:type="array">
