@@ -6,6 +6,7 @@ namespace DvCampus\CustomerPreferences\Model\System\Config\Backend;
 
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
 use Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection as AttributeCollection;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Serialize\Serializer\Json;
 
 class Attributes extends \Magento\Config\Model\Config\Backend\Serialized\ArraySerialized
@@ -14,6 +15,11 @@ class Attributes extends \Magento\Config\Model\Config\Backend\Serialized\ArraySe
      * @var \Magento\Catalog\Model\ResourceModel\Product\Attribute\CollectionFactory
      */
     private $attributeCollectionFactory;
+
+    /**
+     * @var Json|null
+     */
+    private $serializer;
 
     /**
      * Attributes constructor.
@@ -54,11 +60,11 @@ class Attributes extends \Magento\Config\Model\Config\Backend\Serialized\ArraySe
     /**
      * @inheritDoc
      */
-    protected function _afterLoad()
+    protected function _afterLoad(): void
     {
         parent::_afterLoad();
         /** @var array $values */
-        $values = $this->getValue();
+        $values = $this->getValue() ?: [];
 
         $customerAttributeOptionCodes = [];
         /** @var AttributeCollection $attributeCollection */

@@ -67,8 +67,8 @@ class Save extends \Magento\Framework\App\Action\Action implements
      * @param \DvCampus\CustomerPreferences\Model\ResourceModel\Preference\CollectionFactory $preferenceCollectionFactory
      * @param \Magento\Framework\DB\TransactionFactory $transactionFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
-     * @param \Psr\Log\LoggerInterface $logger ,
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig ,
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Framework\App\Action\Context $context
      */
     public function __construct(
@@ -99,11 +99,9 @@ class Save extends \Magento\Framework\App\Action\Action implements
     public function execute()
     {
         // @TODO: merge with customer preferences on login or not? Maybe merge only if empty?
-        $request = $this->getRequest();
-
         // Every fail should be controlled
         try {
-            if (!$this->$this->validateRequest()) {
+            if (!$this->validateRequest()) {
                 throw new LocalizedException(__('Unable to save preferences.'));
             }
 
@@ -172,7 +170,7 @@ class Save extends \Magento\Framework\App\Action\Action implements
             $message = $e->getMessage();
         } catch (\Exception $e) {
             $this->logger->critical($e);
-            $message = __('Your preferences can\'t be saved. Please, contact us if ypu see this message.');
+            $message = __('Your preferences can\'t be saved. Please, contact us if you see this message.');
         }
 
         /** @var JsonResult $response */

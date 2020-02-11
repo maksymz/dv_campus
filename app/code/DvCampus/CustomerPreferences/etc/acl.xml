@@ -5,7 +5,7 @@
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
-                        <resource id="Magento_Config::config" title="Configuration" translate="title" sortOrder="20">
+                        <resource id="Magento_Config::config">
                             <resource id="DvCampus_CustomerPreferences::section" title="Dv Campus Section" translate="title" sortOrder="65">
                                 <resource id="DvCampus_CustomerPreferences::config" title="Customer Preferences" translate="title" sortOrder="100"/>
                             </resource>

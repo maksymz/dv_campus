@@ -36,7 +36,7 @@ define([
                 alert({
                     title: $.mage.__('Error'),
                     content: $.mage.__(
-                        'Your preferences can\'t be saved. Please, contact us if ypu see this message.'
+                        'Your preferences can\'t be saved. Please, contact us if you see this message.'
                     )
                 });
             }
