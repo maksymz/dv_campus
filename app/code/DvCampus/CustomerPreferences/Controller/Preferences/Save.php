@@ -59,11 +59,6 @@ class Save extends \Magento\Framework\App\Action\Action implements
     private $scopeConfig;
 
     /**
-     * @var DataObjectFactory
-     */
-    private $dataObjectFactory;
-
-    /**
      * Save constructor.
      *
      * @param \Magento\Customer\Model\Session $customerSession
@@ -74,7 +69,6 @@ class Save extends \Magento\Framework\App\Action\Action implements
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Psr\Log\LoggerInterface $logger ,
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig ,
-     * @param DataObjectFactory $dataObjectFactory
      * @param \Magento\Framework\App\Action\Context $context
      */
     public function __construct(
@@ -86,7 +80,6 @@ class Save extends \Magento\Framework\App\Action\Action implements
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Framework\DataObjectFactory $dataObjectFactory,
         \Magento\Framework\App\Action\Context $context
     ) {
         parent::__construct($context);
@@ -98,7 +91,6 @@ class Save extends \Magento\Framework\App\Action\Action implements
         $this->storeManager = $storeManager;
         $this->logger = $logger;
         $this->scopeConfig = $scopeConfig;
-        $this->dataObjectFactory = $dataObjectFactory;
     }
 
     /**
