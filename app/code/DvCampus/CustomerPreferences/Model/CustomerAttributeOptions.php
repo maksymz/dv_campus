@@ -6,6 +6,7 @@ namespace DvCampus\CustomerPreferences\Model;
 
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
 use Magento\Catalog\Model\ResourceModel\Product\Attribute\Collection as AttributeCollection;
+use Magento\Store\Model\ScopeInterface;
 
 class CustomerAttributeOptions implements \Magento\Framework\Data\OptionSourceInterface
 {
@@ -49,7 +50,7 @@ class CustomerAttributeOptions implements \Magento\Framework\Data\OptionSourceIn
     {
         $attributes = [];
         $allowedAttributeCodes = [];
-        $attributesConfig = $this->scopeConfigs->getValue(self::XML_PATH_ATTRIBUTES);
+        $attributesConfig = $this->scopeConfigs->getValue(self::XML_PATH_ATTRIBUTES, ScopeInterface::SCOPE_STORE);
 
         if (!$attributesConfig
             || !is_array($attributesConfig = $this->jsonSerializer->unserialize($attributesConfig))

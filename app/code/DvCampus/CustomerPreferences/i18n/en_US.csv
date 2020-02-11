@@ -1,3 +1,7 @@
+"Attribute Code","Attribute Code"
+Enabled,Enabled
+Yes,Yes
+No,No
 "Unable to save preferences.","Unable to save preferences."
 "Your preferences have been updated.","Your preferences have been updated."
 "Your preferences have been updated. Please, log in to save them permanently.","Your preferences have been updated. Please, log in to save them permanently."
@@ -8,7 +12,9 @@
 "Available settings:","Available settings:"
 Success,Success
 Error,Error
+Configuration,Configuration
+"Dv Campus Section","Dv Campus Section"
 "Customer Preferences","Customer Preferences"
 "General Settings","General Settings"
-Enabled,Enabled
 "Allow for Guests","Allow for Guests"
+"Allowed Attributes","Allowed Attributes"
