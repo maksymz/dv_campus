@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="dvcampus" sortOrder="350">
+            <label>DV Campus</label>
+        </tab>
+        <section id="dvcampus_customer_preferences" translate="label" type="text" sortOrder="320" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Customer Preferences</label>
+            <tab>dvcampus</tab>
+            <resource>DvCampus_CustomerPreferences::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="150" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="allow_for_guests" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="1">
+                    <label>Allow for Guests</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <!-- @TODO: Implement login request for guest users -->
+                    <comment>Allow Guests to Save Preferences</comment>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="attributes" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0" canRestore="0">
+                    <label>Allowed Attributes</label>
+                    <frontend_model>DvCampus\CustomerPreferences\Block\Adminhtml\Form\Field\Attributes</frontend_model>
+                    <backend_model>DvCampus\CustomerPreferences\Model\System\Config\Backend\Attributes</backend_model>
+                    <depends>
+                        <field id="*/*/enabled">1</field>
+                    </depends>
+                </field>
+                <!-- @TODO: May move some labels here to make them changeable -->
+            </group>
+        </section>
+    </system>
+</config>

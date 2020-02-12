@@ -86,15 +86,15 @@ class Preference extends \Magento\Framework\Model\AbstractModel
     public function validate(): void
     {
         if (!$this->getCustomerId()) {
-            throw new LocalizedException(__('Can\'t save customer preferences: %s is not set.', 'customer_id'));
+            throw new LocalizedException(__('Can\'t save customer preferences: %1 not set.', 'customer_id'));
         }
 
         if (!$this->getWebsiteId()) {
-            throw new LocalizedException(__('Can\'t save customer preferences: %s is not set.', 'website_id'));
+            throw new LocalizedException(__('Can\'t save customer preferences: %1 is not set.', 'website_id'));
         }
 
         if (!$this->getAttributeId()) {
-            throw new LocalizedException(__('Can\'t save customer preferences: %s is not set.', 'attribute_id'));
+            throw new LocalizedException(__('Can\'t save customer preferences: %1 is not set.', 'attribute_id'));
         }
 
         $attribute = $this->eavConfig->getAttribute(Product::ENTITY, $this->getAttributeId());

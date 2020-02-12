@@ -7,19 +7,24 @@ use DvCampus\CustomerPreferences\Model\Preference;
 use DvCampus\CustomerPreferences\Model\ResourceModel\Preference\Collection as PreferenceCollection;
 use Magento\Framework\Controller\Result\Json as JsonResult;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\DataObjectFactory;
 use Magento\Framework\DB\Transaction;
 use Magento\Framework\Exception\LocalizedException;
 
 class Save extends \Magento\Framework\App\Action\Action implements
     \Magento\Framework\App\Action\HttpPostActionInterface
 {
+    public const XML_PATH_ENABLED = 'dvcampus_customer_preferences/general/enabled';
+
+    public const XML_PATH_ALLOW_FOR_GUESTS = 'dvcampus_customer_preferences/general/allow_for_guests';
+
     /**
-     * @var \Magento\Customer\Model\Session
+     * @var \Magento\Customer\Model\Session $customerSession
      */
     private $customerSession;
 
     /**
-     * @var \Magento\Framework\Data\Form\FormKey\Validator
+     * @var \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator
      */
     private $formKeyValidator;
 
@@ -44,9 +49,14 @@ class Save extends \Magento\Framework\App\Action\Action implements
     private $storeManager;
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @var \Psr\Log\LoggerInterface $logger
      */
     private $logger;
+
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfigs
+     */
+    private $scopeConfig;
 
     /**
      * Save constructor.
@@ -58,6 +68,7 @@ class Save extends \Magento\Framework\App\Action\Action implements
      * @param \Magento\Framework\DB\TransactionFactory $transactionFactory
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Psr\Log\LoggerInterface $logger
+     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Framework\App\Action\Context $context
      */
     public function __construct(
@@ -68,6 +79,7 @@ class Save extends \Magento\Framework\App\Action\Action implements
         \Magento\Framework\DB\TransactionFactory $transactionFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Psr\Log\LoggerInterface $logger,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Framework\App\Action\Context $context
     ) {
         parent::__construct($context);
@@ -78,6 +90,7 @@ class Save extends \Magento\Framework\App\Action\Action implements
         $this->transactionFactory = $transactionFactory;
         $this->storeManager = $storeManager;
         $this->logger = $logger;
+        $this->scopeConfig = $scopeConfig;
     }
 
     /**
@@ -86,19 +99,16 @@ class Save extends \Magento\Framework\App\Action\Action implements
     public function execute()
     {
         // @TODO: merge with customer preferences on login or not? Maybe merge only if empty?
-        $request = $this->getRequest();
-
         // Every fail should be controlled
         try {
-            if (!$this->formKeyValidator->validate($request)) {
-                // This message is translated in the module Magento_Checkout
-                throw new LocalizedException(__('Your session has expired'));
+            if (!$this->validateRequest()) {
+                throw new LocalizedException(__('Unable to save preferences.'));
             }
 
-            $customerId = (int) $this->customerSession->getId();
             $websiteId = (int) $this->storeManager->getWebsite()->getId();
 
-            if ($customerId && !$this->customerSession->getData('is_customer_emulated')) {
+            if ($this->customerSession->isLoggedIn()) {
+                $customerId = (int) $this->customerSession->getId();
                 $preferencesByAttributeCode = [];
 
                 /** @var PreferenceCollection $preferenceCollection */
@@ -149,7 +159,7 @@ class Save extends \Magento\Framework\App\Action\Action implements
                     $this->getPreferencesFromRequest()
                 );
 
-                $preferencesByAttributeCode = array_filter($preferencesByAttributeCode, function($value) {
+                $preferencesByAttributeCode = array_filter($preferencesByAttributeCode, static function ($value) {
                     return $value || $value === '0';
                 });
 
@@ -160,7 +170,7 @@ class Save extends \Magento\Framework\App\Action\Action implements
             $message = $e->getMessage();
         } catch (\Exception $e) {
             $this->logger->critical($e);
-            $message = __('Your preferences can\'t be saved. Please, contact us if ypu see this message.');
+            $message = __('Your preferences can\'t be saved. Please, contact us if you see this message.');
         }
 
         /** @var JsonResult $response */
@@ -170,6 +180,33 @@ class Save extends \Magento\Framework\App\Action\Action implements
         ]);
 
         return $response;
+    }
+
+    /**
+     * @return bool
+     */
+    private function validateRequest(): bool
+    {
+        $request = $this->getRequest();
+        $allowSavingPreferences = true;
+
+        if (!$this->formKeyValidator->validate($request)) {
+            // This message is translated in the module Magento_Checkout
+            $allowSavingPreferences = false;
+        }
+
+        if (!$this->scopeConfig->getValue(self::XML_PATH_ENABLED)
+            || (!$this->customerSession->isLoggedIn() && !$this->scopeConfig->getValue(self::XML_PATH_ALLOW_FOR_GUESTS))
+        ) {
+            $allowSavingPreferences = false;
+        }
+
+        $eventParameters = [
+            'allow_saving_preferences' => $allowSavingPreferences
+        ];
+        $this->_eventManager->dispatch('dvcampus_customer_preferences_allow_save', $eventParameters);
+
+        return $allowSavingPreferences;
     }
 
     /**
