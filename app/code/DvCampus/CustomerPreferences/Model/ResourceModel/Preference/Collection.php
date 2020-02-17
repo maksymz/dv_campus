@@ -5,6 +5,8 @@ namespace DvCampus\CustomerPreferences\Model\ResourceModel\Preference;
 
 class Collection extends \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
 {
+    protected $_idFieldName = 'preference_id';
+
     /**
      * @inheritDoc
      */

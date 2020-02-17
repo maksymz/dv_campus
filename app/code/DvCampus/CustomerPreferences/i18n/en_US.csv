@@ -2,19 +2,28 @@
 Enabled,Enabled
 Yes,Yes
 No,No
+"%1 preference(s) have been deleted.","%1 preference(s) have been deleted."
 "Unable to save preferences.","Unable to save preferences."
 "Your preferences have been updated.","Your preferences have been updated."
 "Your preferences have been updated. Please, log in to save them permanently.","Your preferences have been updated. Please, log in to save them permanently."
 "Your preferences can't be saved. Please, contact us if you see this message.","Your preferences can't be saved. Please, contact us if you see this message."
-"Can't save customer preferences: %s is not set.","Can't save customer preferences: %s is not set."
+"Can't save customer preferences: %1 not set.","Can't save customer preferences: %1 not set."
+"Can't save customer preferences: %1 is not set.","Can't save customer preferences: %1 is not set."
 "Attribute with ID %s is not a product attribute.","Attribute with ID %s is not a product attribute."
 "My Preferences","My Preferences"
 "Available settings:","Available settings:"
 Success,Success
 Error,Error
-Configuration,Configuration
 "Dv Campus Section","Dv Campus Section"
 "Customer Preferences","Customer Preferences"
 "General Settings","General Settings"
 "Allow for Guests","Allow for Guests"
 "Allowed Attributes","Allowed Attributes"
+"Are you sure you want to delete the selected preferences?","Are you sure you want to delete the selected preferences?"
+"Delete preferences","Delete preferences"
+"Delete Preferences","Delete Preferences"
+"Preference ID","Preference ID"
+"Customer Name","Customer Name"
+Website,Website
+"Attribute ID","Attribute ID"
+"Preferred Value","Preferred Value"

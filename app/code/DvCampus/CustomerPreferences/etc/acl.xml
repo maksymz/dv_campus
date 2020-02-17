@@ -12,6 +12,9 @@
                         </resource>
                     </resource>
                 </resource>
+                <resource id="Magento_Customer::customer">
+                    <resource id="DvCampus_CustomerPreferences::listing" title="Customer Preferences" translate="title" sortOrder="50"/>
+                </resource>
             </resource>
         </resources>
     </acl>
