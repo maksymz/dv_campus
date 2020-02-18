@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="DvCampus_CustomerPreferences::preferences"
+             title="Dv Campus"
+             module="DvCampus_CustomerPreferences"
+             sortOrder="50"
+             parent="Magento_Customer::customer"
+             resource="DvCampus_CustomerPreferences::listing"
+        />
+        <add id="DvCampus_CustomerPreferences::listing"
+             title="Customer Preferences"
+             translate="title"
+             module="DvCampus_CustomerPreferences"
+             sortOrder="10"
+             parent="DvCampus_CustomerPreferences::preferences"
+             action="dvcampus_customer_preferences/preferences/index"
+             resource="DvCampus_CustomerPreferences::listing"
+        />
+    </menu>
+</config>

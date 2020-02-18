@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">preferences_listing.preferences_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>preferences_columns</spinner>
+        <deps>
+            <dep>preferences_listing.preferences_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="preferences_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">preference_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>DvCampus_CustomerPreferences::listing</aclResource>
+        <dataProvider class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider" name="preferences_listing_data_source">
+            <settings>
+                <requestFieldName>preference_id</requestFieldName>
+                <primaryFieldName>preference_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters"/>
+        <exportButton name="export_button"/>
+        <massaction name="listing_massaction">
+            <action name="delete">
+                <settings>
+                    <confirm>
+                        <message translate="true">Are you sure you want to delete the selected preferences?</message>
+                        <title translate="true">Delete preferences</title>
+                    </confirm>
+                    <url path="dvcampus_customer_preferences/preferences/delete"/>
+                    <type>delete</type>
+                    <label translate="true">Delete Preferences</label>
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="preferences_columns">
+        <settings>
+            <editorConfig>
+                <param name="enabled" xsi:type="boolean">false</param>
+            </editorConfig>
+        </settings>
+        <selectionsColumn name="ids" sortOrder="0">
+            <settings>
+                <indexField>preference_id</indexField>
+            </settings>
+        </selectionsColumn>
+        <column name="preference_id" sortOrder="10">
+            <settings>
+                <filter>textRange</filter>
+                <sorting>asc</sorting>
+                <label translate="true">Preference ID</label>
+            </settings>
+        </column>
+        <column name="customer_id" sortOrder="20">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Customer Name</label>
+            </settings>
+        </column>
+        <column name="website_id" component="Magento_Ui/js/grid/columns/select" sortOrder="30">
+            <settings>
+                <filter>select</filter>
+                <options class="Magento\Store\Model\ResourceModel\Website\Collection"/>
+                <dataType>select</dataType>
+                <label translate="true">Website</label>
+            </settings>
+        </column>
+        <column name="attribute_id" sortOrder="40">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Attribute ID</label>
+            </settings>
+        </column>
+        <column name="preferred_values" sortOrder="50">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Preferred Value</label>
+            </settings>
+        </column>
+    </columns>
+</listing>
