@@ -2,6 +2,15 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd"
 >
+    <preference for="DvCampus\CustomerPreferences\Api\Data\PreferenceInterface"
+                type="DvCampus\CustomerPreferences\Model\PreferenceData"
+    />
+    <preference for="DvCampus\CustomerPreferences\Api\Data\PreferenceSearchResultInterface"
+                type="DvCampus\CustomerPreferences\Model\PreferenceSearchResult"
+    />
+    <preference for="DvCampus\CustomerPreferences\Api\PreferenceRepositoryInterface"
+                type="DvCampus\CustomerPreferences\Model\PreferenceRepository"
+    />
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
