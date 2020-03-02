@@ -87,13 +87,13 @@ interface PreferenceInterface
     public function setPreferredValues(string $preferredValues): self;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCreatedAt(): string;
+    public function getCreatedAt(): ?string;
 
     /**
-     * @param string $createdAt
+     * @param string|null $createdAt
      * @return $this
      */
-    public function setCreatedAt(string $createdAt): self;
+    public function setCreatedAt(string $createdAt = null): self;
 }

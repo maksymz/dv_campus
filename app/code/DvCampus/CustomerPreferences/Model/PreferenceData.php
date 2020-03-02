@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DvCampus\CustomerPreferences\Model;
@@ -111,7 +112,7 @@ class PreferenceData extends \Magento\Framework\Api\AbstractSimpleObject impleme
      */
     public function setPreferredValues(string $preferredValues): PreferenceInterface
     {
-        $this->setData(self::WEBSITE_ID, $preferredValues);
+        $this->setData(self::PREFERRED_VALUES, $preferredValues);
 
         return $this;
     }
@@ -119,17 +120,17 @@ class PreferenceData extends \Magento\Framework\Api\AbstractSimpleObject impleme
     /**
      * @inheritDoc
      */
-    public function getCreatedAt(): string
+    public function getCreatedAt(): ?string
     {
-        return (string) $this->_get(PreferenceInterface::CREATED_AT);
+        return $this->_get(PreferenceInterface::CREATED_AT);
     }
 
     /**
      * @inheritDoc
      */
-    public function setCreatedAt(string $createdAt): PreferenceInterface
+    public function setCreatedAt(string $createdAt = null): PreferenceInterface
     {
-        $this->setData(self::WEBSITE_ID, $createdAt);
+        $this->setData(self::CREATED_AT, $createdAt);
 
         return $this;
     }

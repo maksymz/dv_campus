@@ -18,6 +18,16 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Framework\EntityManager\MetadataPool">
+        <arguments>
+            <argument name="metadata" xsi:type="array">
+                <item name="DvCampus\CustomerPreferences\Api\Data\PreferenceInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">dv_campus_customer_preferences</item>
+                    <item name="identifierField" xsi:type="string">preference_id</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
     <virtualType name="DvCampus\CustomerPreferences\Model\ResourceModel\Preference\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult"
     >

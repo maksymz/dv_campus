@@ -14,19 +14,9 @@ class CustomerPreferences implements \Magento\Customer\CustomerData\SectionSourc
     private $customerSession;
 
     /**
-     * @var \DvCampus\CustomerPreferences\Model\PreferenceRepository $preferenceRepository
+     * @var \DvCampus\CustomerPreferences\Model\PreferenceManagement $preferenceManagement
      */
-    private $preferenceRepository;
-
-    /**
-     * @var \Magento\Framework\Api\FilterBuilder $filterBuilder
-     */
-    private $filterBuilder;
-
-    /**
-     * @var \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
+    private $preferenceManagement;
 
     /**
      * @var \Magento\Store\Model\StoreManagerInterface $storeManager
@@ -36,48 +26,32 @@ class CustomerPreferences implements \Magento\Customer\CustomerData\SectionSourc
     /**
      * CustomerPreferences constructor.
      * @param \Magento\Customer\Model\Session $customerSession
-     * @param \DvCampus\CustomerPreferences\Model\PreferenceRepository $preferenceRepository
-     * @param \Magento\Framework\Api\FilterBuilder $filterBuilder
-     * @param \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param \DvCampus\CustomerPreferences\Model\PreferenceManagement $preferenceManagement
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
     public function __construct(
         \Magento\Customer\Model\Session $customerSession,
-        \DvCampus\CustomerPreferences\Model\PreferenceRepository $preferenceRepository,
-        \Magento\Framework\Api\FilterBuilder $filterBuilder,
-        \Magento\Framework\Api\SearchCriteriaBuilder $searchCriteriaBuilder,
+        \DvCampus\CustomerPreferences\Model\PreferenceManagement $preferenceManagement,
         \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         $this->customerSession = $customerSession;
-        $this->preferenceRepository = $preferenceRepository;
-        $this->filterBuilder = $filterBuilder;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->preferenceManagement = $preferenceManagement;
         $this->storeManager = $storeManager;
     }
 
     /**
      * @inheritDoc
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getSectionData(): array
     {
         if ($this->customerSession->isLoggedIn()) {
             $data = [];
 
-            $this->searchCriteriaBuilder->addFilters([
-                $this->filterBuilder
-                    ->setField('customer_id')
-                    ->setValue((int) $this->customerSession->getId())
-                    ->setConditionType('eq')
-                    ->create(),
-                $this->filterBuilder
-                    ->setField('website_id')
-                    ->setValue((int) $this->storeManager->getWebsite()->getId())
-                    ->setConditionType('eq')
-                    ->create()
-            ]);
-
-            $customerPreferences = $this->preferenceRepository->getList($this->searchCriteriaBuilder->create())
-                ->getItems();
+            $customerPreferences = $this->preferenceManagement->getCustomerPreferences(
+                (int) $this->customerSession->getId(),
+                (int) $this->storeManager->getWebsite()->getId()
+            );
 
             /** @var PreferenceData $customerPreference */
             foreach ($customerPreferences as $customerPreference) {

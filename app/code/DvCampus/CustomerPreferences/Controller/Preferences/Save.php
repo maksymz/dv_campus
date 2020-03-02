@@ -1,14 +1,13 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DvCampus\CustomerPreferences\Controller\Preferences;
 
-use DvCampus\CustomerPreferences\Model\Preference;
-use DvCampus\CustomerPreferences\Model\ResourceModel\Preference\Collection as PreferenceCollection;
+use DvCampus\CustomerPreferences\Api\Data\PreferenceInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Framework\Controller\Result\Json as JsonResult;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\DataObjectFactory;
-use Magento\Framework\DB\Transaction;
 use Magento\Framework\Exception\LocalizedException;
 
 class Save extends \Magento\Framework\App\Action\Action implements
@@ -29,19 +28,24 @@ class Save extends \Magento\Framework\App\Action\Action implements
     private $formKeyValidator;
 
     /**
-     * @var \DvCampus\CustomerPreferences\Model\PreferenceFactory $preferenceFactory
+     * @var \DvCampus\CustomerPreferences\Api\Data\PreferenceInterfaceFactory $preferenceFactory
      */
     private $preferenceFactory;
 
     /**
-     * @var \DvCampus\CustomerPreferences\Model\ResourceModel\Preference\CollectionFactory $preferenceCollectionFactory
+     * @var \DvCampus\CustomerPreferences\Model\PreferenceManagement $preferenceManagement
      */
-    private $preferenceCollectionFactory;
+    private $preferenceManagement;
 
     /**
-     * @var \Magento\Framework\DB\TransactionFactory $transactionFactory
+     * @var \DvCampus\CustomerPreferences\Model\PreferenceRepository $preferenceRepository
      */
-    private $transactionFactory;
+    private $preferenceRepository;
+
+    /**
+     * @var \Magento\Eav\Model\Config $eavConfig
+     */
+    private $eavConfig;
 
     /**
      * @var \Magento\Store\Model\StoreManagerInterface $storeManager
@@ -63,9 +67,10 @@ class Save extends \Magento\Framework\App\Action\Action implements
      *
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator
-     * @param \DvCampus\CustomerPreferences\Model\PreferenceFactory $preferenceFactory
-     * @param \DvCampus\CustomerPreferences\Model\ResourceModel\Preference\CollectionFactory $preferenceCollectionFactory
-     * @param \Magento\Framework\DB\TransactionFactory $transactionFactory
+     * @param \DvCampus\CustomerPreferences\Api\Data\PreferenceInterfaceFactory $preferenceFactory
+     * @param \DvCampus\CustomerPreferences\Model\PreferenceManagement $preferenceManagement
+     * @param \DvCampus\CustomerPreferences\Model\PreferenceRepository $preferenceRepository
+     * @param \Magento\Eav\Model\Config $eavConfig
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -74,9 +79,10 @@ class Save extends \Magento\Framework\App\Action\Action implements
     public function __construct(
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\Data\Form\FormKey\Validator $formKeyValidator,
-        \DvCampus\CustomerPreferences\Model\PreferenceFactory $preferenceFactory,
-        \DvCampus\CustomerPreferences\Model\ResourceModel\Preference\CollectionFactory $preferenceCollectionFactory,
-        \Magento\Framework\DB\TransactionFactory $transactionFactory,
+        \DvCampus\CustomerPreferences\Api\Data\PreferenceInterfaceFactory $preferenceFactory,
+        \DvCampus\CustomerPreferences\Model\PreferenceManagement $preferenceManagement,
+        \DvCampus\CustomerPreferences\Model\PreferenceRepository $preferenceRepository,
+        \Magento\Eav\Model\Config $eavConfig,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
@@ -86,8 +92,9 @@ class Save extends \Magento\Framework\App\Action\Action implements
         $this->customerSession = $customerSession;
         $this->formKeyValidator = $formKeyValidator;
         $this->preferenceFactory = $preferenceFactory;
-        $this->preferenceCollectionFactory = $preferenceCollectionFactory;
-        $this->transactionFactory = $transactionFactory;
+        $this->preferenceManagement = $preferenceManagement;
+        $this->preferenceRepository = $preferenceRepository;
+        $this->eavConfig = $eavConfig;
         $this->storeManager = $storeManager;
         $this->logger = $logger;
         $this->scopeConfig = $scopeConfig;
@@ -111,20 +118,13 @@ class Save extends \Magento\Framework\App\Action\Action implements
                 $customerId = (int) $this->customerSession->getId();
                 $preferencesByAttributeCode = [];
 
-                /** @var PreferenceCollection $preferenceCollection */
-                $preferenceCollection = $this->preferenceCollectionFactory->create();
-                $preferenceCollection->addCustomerFilter($customerId)
-                    ->addWebsiteFilter($websiteId);
+                /** @var PreferenceInterface[] $preferences */
+                $preferences = $this->preferenceManagement->getCustomerPreferences($customerId, $websiteId);
 
-                /** @var Preference $existingPreference */
-                foreach ($preferenceCollection as $existingPreference) {
+                /** @var PreferenceInterface $existingPreference */
+                foreach ($preferences as $existingPreference) {
                     $preferencesByAttributeCode[$existingPreference->getAttributeCode()] = $existingPreference;
                 }
-
-                /** @var Transaction $saveTransaction */
-                $saveTransaction = $this->transactionFactory->create();
-                /** @var Transaction $deleteTransaction */
-                $deleteTransaction = $this->transactionFactory->create();
 
                 foreach ($this->getPreferencesFromRequest() as $attributeCode => $value) {
                     if (isset($preferencesByAttributeCode[$attributeCode])) {
@@ -133,25 +133,24 @@ class Save extends \Magento\Framework\App\Action\Action implements
                         if ($preference->getPreferredValues() !== $value) {
                             if ($value) {
                                 $preference->setPreferredValues($value);
-                                $saveTransaction->addObject($preference);
+                                $this->preferenceRepository->save($preference);
                             } else {
-                                $deleteTransaction->addObject($preference);
+                                $this->preferenceRepository->delete($preference);
                             }
                         }
                     } elseif ($value) {
-                        /** @var Preference $preference */
+                        /** @var PreferenceInterface $preference */
                         $preference = $this->preferenceFactory->create();
+                        $attribute = $this->eavConfig->getAttribute(Product::ENTITY, $attributeCode);
 
                         $preference->setCustomerId($customerId)
                             ->setWebsiteId($websiteId)
-                            ->setAttributeId($attributeCode)
+                            ->setAttributeId((int) $attribute->getId())
                             ->setPreferredValues($value);
-                        $saveTransaction->addObject($preference);
+                        $this->preferenceRepository->save($preference);
                     }
                 }
 
-                $saveTransaction->save();
-                $deleteTransaction->delete();
                 $message = __('Your preferences have been updated.');
             } else {
                 $preferencesByAttributeCode = array_merge(
