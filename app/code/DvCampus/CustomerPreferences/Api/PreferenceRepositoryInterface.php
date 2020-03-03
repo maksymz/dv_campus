@@ -30,7 +30,7 @@ interface PreferenceRepositoryInterface
      * Get list of customer preferences
      *
      * @param SearchCriteriaInterface $searchCriteria
-     * @return PreferenceSearchResultInterface
+     * @return \DvCampus\CustomerPreferences\Api\Data\PreferenceSearchResultInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria): PreferenceSearchResultInterface;
 
