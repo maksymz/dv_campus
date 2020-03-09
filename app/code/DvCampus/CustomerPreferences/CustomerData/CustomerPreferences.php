@@ -1,59 +1,60 @@
 <?php
+
 declare(strict_types=1);
 
 namespace DvCampus\CustomerPreferences\CustomerData;
 
-use DvCampus\CustomerPreferences\Model\Preference;
-use DvCampus\CustomerPreferences\Model\ResourceModel\Preference\Collection as PreferenceCollection;
+use DvCampus\CustomerPreferences\Model\PreferenceData;
 
 class CustomerPreferences implements \Magento\Customer\CustomerData\SectionSourceInterface
 {
     /**
-     * @var \Magento\Customer\Model\Session
+     * @var \Magento\Customer\Model\Session $customerSession
      */
     private $customerSession;
 
     /**
-     * @var \DvCampus\CustomerPreferences\Model\ResourceModel\Preference\CollectionFactory
+     * @var \DvCampus\CustomerPreferences\Model\PreferenceManagement $preferenceManagement
      */
-    private $preferenceCollectionFactory;
+    private $preferenceManagement;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var \Magento\Store\Model\StoreManagerInterface $storeManager
      */
     private $storeManager;
 
     /**
      * CustomerPreferences constructor.
      * @param \Magento\Customer\Model\Session $customerSession
-     * @param \DvCampus\CustomerPreferences\Model\ResourceModel\Preference\CollectionFactory $preferenceCollectionFactory
+     * @param \DvCampus\CustomerPreferences\Model\PreferenceManagement $preferenceManagement
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      */
     public function __construct(
         \Magento\Customer\Model\Session $customerSession,
-        \DvCampus\CustomerPreferences\Model\ResourceModel\Preference\CollectionFactory $preferenceCollectionFactory,
+        \DvCampus\CustomerPreferences\Model\PreferenceManagement $preferenceManagement,
         \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
         $this->customerSession = $customerSession;
-        $this->preferenceCollectionFactory = $preferenceCollectionFactory;
+        $this->preferenceManagement = $preferenceManagement;
         $this->storeManager = $storeManager;
     }
 
     /**
      * @inheritDoc
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getSectionData(): array
     {
-        // @TODO: we must deal with deleted attributes or deleted attribute options
         if ($this->customerSession->isLoggedIn()) {
             $data = [];
-            /** @var PreferenceCollection $preferenceCollection */
-            $preferenceCollection = $this->preferenceCollectionFactory->create();
-            $preferenceCollection->addCustomerFilter((int) $this->customerSession->getId())
-                ->addWebsiteFilter((int) $this->storeManager->getWebsite()->getId());
 
-            /** @var Preference $customerPreference */
-            foreach ($preferenceCollection as $customerPreference) {
+            $customerPreferences = $this->preferenceManagement->getCustomerPreferences(
+                (int) $this->customerSession->getId(),
+                (int) $this->storeManager->getWebsite()->getId()
+            );
+
+            /** @var PreferenceData $customerPreference */
+            foreach ($customerPreferences as $customerPreference) {
                 $data[$customerPreference->getAttributeCode()] = $customerPreference->getPreferredValues();
             }
         } else {
