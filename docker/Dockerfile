@@ -91,3 +91,10 @@ RUN if [ "$DEVELOPER_MODE" = 1 ] ; then \
     else \
         composer global require hirak/prestissimo ; \
     fi ;
+
+ENV PATH /usr/local/go/bin:$PATH
+
+RUN curl -Lsf 'https://storage.googleapis.com/golang/go1.11.8.linux-amd64.tar.gz' | tar -C '/usr/local' -xvzf - ; \
+    go get github.com/mailhog/mhsendmail ; \
+    cp /root/go/bin/mhsendmail /usr/bin/mhsendmail ; \
+    echo 'sendmail_path = /usr/bin/mhsendmail --smtp-addr mailhog:1025' >> /usr/local/etc/php/conf.d/docker-php-xxx-custom.ini
