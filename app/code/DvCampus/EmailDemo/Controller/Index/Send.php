@@ -38,7 +38,7 @@ class Send extends \Magento\Framework\App\Action\Action implements
         $this->email->send();
         /** @var Raw $result */
         $result = $this->resultFactory->create(ResultFactory::TYPE_RAW);
-        $result->setContents('');
+        $result->setContents('Email sent');
 
         return $result;
     }
