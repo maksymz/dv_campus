@@ -24,13 +24,20 @@ class Finishing extends \Magento\Catalog\Block\Product\View\Options
         $attribute = $product->getAttributes()['finishing'];
         $optionIds = explode(',', $finishing);
 
+        // Must provide at least 4 options to select from. Otherwise available options will be used
+        // and there is no need to show the select field.
+        if (count($optionIds) < 4) {
+            return '';
+        }
+
         /** @var Select $select */
         $select = $this->getLayout()->createBlock(
             Select::class
         )->setData([
             'id' => 'select_' . $attribute->getAttributeCode(),
+            // @TODO: find proper validation rule or add customer to have 3 options selected
             'class' => 'multiselect required product-custom-option admin__control-select',
-            'name' => 'options[additional_' . $attribute->getAttributeCode() . '][]'
+            'name' => 'options[' . $attribute->getAttributeCode() . '][]'
         ]);
 
         $extraParams = ' multiple="multiple"';
