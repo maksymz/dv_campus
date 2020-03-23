@@ -12,3 +12,5 @@ Should this be done on a new checkout step?
 6. Should we add a new quote item or replace the value in all items?
 
 7. Do we need to add the same in Admin Panel so that the store administrator can select options?
+
+8. Must show this information in emails, PDFs, in My Orders and in the Admin Panel.

@@ -50,6 +50,10 @@ class Finishing extends \Magento\Catalog\Block\Product\View\Options
             );
         }
 
+        if ($configValue = $this->getProduct()->getPreconfiguredValues()->getData('options/finishing')) {
+            $select->setValue($configValue);
+        }
+
         return $select->toHtml();
     }
 }
