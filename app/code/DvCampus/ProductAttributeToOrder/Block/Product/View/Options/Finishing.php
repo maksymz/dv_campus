@@ -23,10 +23,12 @@ class Finishing extends \Magento\Catalog\Block\Product\View\Options
 
         $attribute = $product->getAttributes()['finishing'];
         $optionIds = explode(',', $finishing);
+        $configValue = $this->getProduct()->getPreconfiguredValues()->getData('options/finishing');
 
         // Must provide at least 4 options to select from. Otherwise available options will be used
         // and there is no need to show the select field.
-        if (count($optionIds) < 4) {
+        // If we're on the Edit Product page - show the field anyway.
+        if (!$configValue && count($optionIds) < 4) {
             return '';
         }
 
@@ -50,7 +52,7 @@ class Finishing extends \Magento\Catalog\Block\Product\View\Options
             );
         }
 
-        if ($configValue = $this->getProduct()->getPreconfiguredValues()->getData('options/finishing')) {
+        if ($configValue) {
             $select->setValue($configValue);
         }
 
