@@ -240,6 +240,7 @@ return [
         'Dotdigitalgroup_Email' => 1,
         'DvCampus_Catalog' => 1,
         'DvCampus_CustomerPreferences' => 1,
+        'DvCampus_EmailDemo' => 1,
         'Klarna_Core' => 1,
         'Klarna_Ordermanagement' => 1,
         'Klarna_Kp' => 1,

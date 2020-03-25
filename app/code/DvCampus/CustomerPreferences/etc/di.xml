@@ -11,6 +11,13 @@
     <preference for="DvCampus\CustomerPreferences\Api\PreferenceRepositoryInterface"
                 type="DvCampus\CustomerPreferences\Model\PreferenceRepository"
     />
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="dvcampus_customer_preferences_refresh_statistics" xsi:type="object">DvCampus\CustomerPreferences\Console\Command\RefreshStatistics</item>
+            </argument>
+        </arguments>
+    </type>
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
