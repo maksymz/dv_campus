@@ -27,7 +27,7 @@ return [
         ]
     ],
     'x-frame-options' => 'SAMEORIGIN',
-    'MAGE_MODE' => 'production',
+    'MAGE_MODE' => 'developer',
     'session' => [
         'save' => 'redis',
         'redis' => [
@@ -107,7 +107,7 @@ return [
                     'base_static_url' => 'https://maksym-zaporozhets-development.local/static/',
                     'base_media_url' => 'https://maksym-zaporozhets-development.local/media/'
                 ]
-            ],
+            ]
         ],
         'websites' => [
             'additional_website' => [
