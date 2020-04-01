@@ -1,5 +1,5 @@
 # SSL certificates for development
-# $ mkcert maksym-zaporozhets.local www.maksym-zaporozhets.local maksym-zaporozhets-additional.local www.maksym-zaporozhets-additional.local
+# $ mkcert maksym-zaporozhets.local www.maksym-zaporozhets.local maksym-zaporozhets-additional.local www.maksym-zaporozhets-additional.local maksym-zaporozhets-development.local www.maksym-zaporozhets-development.local maksym-zaporozhets-additional-development.local www.maksym-zaporozhets-additional-development.local
 #
 # DEVELOPMENT:
 # $ docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
@@ -34,11 +34,11 @@ services:
     extra_hosts:
       - "maksym-zaporozhets.local www.maksym-zaporozhets.local maksym-zaporozhets-additional.local www.maksym-zaporozhets-additional.local:127.0.0.1"
     links:
-      - redis
 #      - memcached
+      - redis
+#      - elasticsearch
     external_links:
       - mysql57:mysql
-      - mailhog
 #    networks:
 #      - reverse-proxy
     network_mode: bridge
@@ -57,7 +57,25 @@ services:
 #  memcached:
 #    image: 'memcached:1.5'
 #    network_mode: bridge
+#    labels:
+#      - traefik.enable=false
 #    restart: always
+
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.6
+#    environment:
+#      http.host: 0.0.0.0
+#      transport.host: localhost
+#      network.host: 0.0.0.0
+#      xpack.security.enabled: "false"
+#      indices.query.bool.max_clause_count: 10240
+#      ES_JAVA_OPTS: -Xms512m -Xmx512m
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#    restart: always
+#    network_mode: bridge
 
 #networks:
 #  reverse-proxy:

@@ -11,9 +11,9 @@ return [
         'connection' => [
             'default' => [
                 'host' => 'mysql',
-                'dbname' => 'demo_232_local',
-                'username' => 'demo_232_local',
-                'password' => 'demo_232_local',
+                'dbname' => 'demo_232_local_build',
+                'username' => 'demo_232_local_build',
+                'password' => 'f$%CP:%(#CYNUIF',
                 'model' => 'mysql4',
                 'engine' => 'innodb',
                 'initStatements' => 'SET NAMES utf8;',
@@ -27,7 +27,7 @@ return [
         ]
     ],
     'x-frame-options' => 'SAMEORIGIN',
-    'MAGE_MODE' => 'developer',
+    'MAGE_MODE' => 'production',
     'session' => [
         'save' => 'redis',
         'redis' => [
@@ -91,5 +91,39 @@ return [
     'downloadable_domains' => [
         'demo-232.local',
         'maksym-zaporozhets.local'
+    ],
+    'system' => [
+        'default' => [
+            'web' => [
+                'unsecure' => [
+                    'base_url' => 'https://maksym-zaporozhets.local/',
+                    'base_link_url' => '{{unsecure_base_url}}',
+                    'base_static_url' => 'https://maksym-zaporozhets.local/static/',
+                    'base_media_url' => 'https://maksym-zaporozhets.local/media/'
+                ],
+                'secure' => [
+                    'base_url' => 'https://maksym-zaporozhets.local/',
+                    'base_link_url' => '{{secure_base_url}}',
+                    'base_static_url' => 'https://maksym-zaporozhets.local/static/',
+                    'base_media_url' => 'https://maksym-zaporozhets.local/media/'
+                ]
+            ],
+        ],
+        'websites' => [
+            'additional_website' => [
+                'web' => [
+                    'unsecure' => [
+                        'base_url' => 'https://maksym-zaporozhets-additional.local/',
+                        'base_static_url' => 'https://maksym-zaporozhets-additional.local/static/',
+                        'base_media_url' => 'https://maksym-zaporozhets-additional.local/media/'
+                    ],
+                    'secure' => [
+                        'base_url' => 'https://maksym-zaporozhets-additional.local/',
+                        'base_static_url' => 'https://maksym-zaporozhets-additional.local/static/',
+                        'base_media_url' => 'https://maksym-zaporozhets-additional.local/media/'
+                    ]
+                ]
+            ]
+        ]
     ]
 ];

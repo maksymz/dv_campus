@@ -1,6 +1,7 @@
 version: "3.7"
 services:
   php-apache:
+    container_name: maksym-zaporozhets.local-build
     build:
       args:
         - DEVELOPER_MODE=1 # needed for the build stage
@@ -8,6 +9,7 @@ services:
     sysctls:
       - net.ipv4.ip_unprivileged_port_start=0
     labels:
+      - traefik.enable=false
       - traefik.http.frontend.rule=Host:maksym-zaporozhets.local,www.maksym-zaporozhets.local,maksym-zaporozhets-additional.local,www.maksym-zaporozhets-additional.local
       - traefik.https.frontend.rule=Host:maksym-zaporozhets.local,www.maksym-zaporozhets.local,maksym-zaporozhets-additional.local,www.maksym-zaporozhets-additional.local
       # develop with extension that allows setting livereload host and port - https://github.com/lokcito/livereload-extensions
@@ -29,14 +31,14 @@ services:
       # Must be set to some of the domains for xdebug to work. Should have server configured in
       # Preferences > Language and Frameworks > PHP > Servers
       # Or just run the project with the same domain and debug enabled in the browser
-      - PHP_IDE_CONFIG=serverName=maksym-zaporozhets.local
+      - PHP_IDE_CONFIG=serverName=maksym-zaporozhets.local-build
 #      - PHP_XDEBUG_ENABLED=1 # needed for the entrypoint script
 
 # IMPORTANT FOR MAC USERS!!!
 # ALL BELOW is for Mac only to enable docker sync stack
 #    volumes:
-#      - maksym-zaporozhets.local-sync:/var/www/html:nocopy
+#      - maksym-zaporozhets.local-build-sync:/var/www/html:nocopy
 
 #volumes:
-#  maksym-zaporozhets.local-sync:
+#  maksym-zaporozhets.local-build-sync:
 #    external: true

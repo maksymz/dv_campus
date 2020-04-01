@@ -34,8 +34,7 @@ RUN if [ "$MEMCACHED" = 1 ] ; then \
     fi ;
 
 RUN echo "deb http://deb.debian.org/debian stretch-backports main" >> /etc/apt/sources.list ; \
-    apt-get update && apt-get -t stretch-backports install -y libsodium-dev ; \
-    docker-php-ext-install sodium
+    apt-get update && apt-get -t stretch-backports install -y libsodium-dev
 
 RUN rm -r /var/lib/apt/lists/*
 
@@ -44,7 +43,7 @@ RUN docker-php-ext-configure \
   gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
 
 # Install PHP Extensions
-RUN docker-php-ext-install gd intl pdo_mysql recode soap xml xmlrpc xsl zip bcmath
+RUN docker-php-ext-install gd intl pdo_mysql recode soap xml xmlrpc xsl zip bcmath sodium sockets
 
 RUN if [ "$DEVELOPER_MODE" = 1 ] ; then \
         pecl install xdebug ; \
@@ -61,7 +60,7 @@ RUN if [ "$DEVELOPER_MODE" = 1 ] ; then \
         cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini ; \
     fi ; \
     echo "always_populate_raw_post_data=-1" >> /usr/local/etc/php/conf.d/docker-php-xxx-custom.ini ; \
-    echo 'memory_limit=2G' >> /usr/local/etc/php/conf.d/docker-php-xxx-custom.ini
+    echo 'memory_limit=2048M' >> /usr/local/etc/php/conf.d/docker-php-xxx-custom.ini
 
 # Will use this in production as well for now - till we do not have full CD process
 RUN docker-php-ext-install opcache ; \
@@ -74,7 +73,7 @@ RUN docker-php-ext-install opcache ; \
 
 # Grunt uses PHP :( So need to install it for dev env. Let's for now orient on DEVELOPER_MODE variable for now
 RUN if [ "$DEVELOPER_MODE" = 1 ] ; then \
-        curl -sL https://deb.nodesource.com/setup_11.x | bash - \
+        curl -sL https://deb.nodesource.com/setup_12.x | bash - \
         && apt-get install nodejs -y \
         && npm install -g grunt-cli ; \
     fi ;
