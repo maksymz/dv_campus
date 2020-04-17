@@ -1,11 +1,24 @@
 # Deploying changes to the live server #
 
-Deployment are automated to decrease the possible downtime. Files to run:
+Deployment is automated to decrease the possible downtime. Files to run:
+- `deploy-theme-only.sh` - deploy changes to templates, layouts, CSS, DI etc. without installing new modules, upgrading them or changing modules sequence.
+- `deploy-full.sh` - deploy changes that include installing new modules or data/schema upgrades.
+​
 
-`deploy-theme-only.sh` - deploy changes to templates, layouts, CSS, DI etc. without installing new modules, upgrading
-them or changing modules sequence.
+To use this scripts the following environment variables must be set:
+- `BUILD_SYSTEM_PATH` - path to the build system without `/` at the end (not visible from the web);
+- `LIVE_SYSTEM_PATH` - path to the live system `/` at the end (development, staging, production etc.);
+- `GIT_BRANCH` - branch to checkout and deploy.
+​
 
-`deploy-full.sh` - deploy changes that include installing new modules or data/schema upgrades.
+To add these variables to the environment, run the following commands and restart the terminal session. Ensure that
+`.bash_aliases` is available in your OS (debian-based mostly), use `~/.bash_profile` or other respective file otherwise:
+​
+```bash
+export BUILD_SYSTEM_PATH="/path/to/the/build/system/" >> ~/.bash_aliases
+export PRODUCTION_SYSTEM_PATH="/path/to/the/production/system/" >> ~/.bash_aliases
+export GIT_BRANCH="name-of-you-branch" >> ~/.bash_aliases
+```
 
 Deployment process flow implemented in the above files:
 
